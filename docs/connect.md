@@ -31,9 +31,10 @@ Where your plan and workspace allow custom MCP servers:
 1. **Plugins** → **+** → **Add custom MCP server**.
 2. Enter a name and the MCP URL, and choose no authentication.
 3. **Create** it as a plugin and install it.
-4. In a chat, type **@** and pick it.
+4. Start a new chat. If the home page has **Chat** and **Work** tabs, switch to **Work** first.
+5. Type **@** and pick it.
 
-OpenAI's menus differ between plans and have changed recently. Guide: [Connect from ChatGPT](https://developers.openai.com/plugins/deploy/connect-chatgpt)
+OpenAI's menus differ between plans and have changed recently. Guides: [Connect from ChatGPT](https://developers.openai.com/plugins/deploy/connect-chatgpt), [Quickstart](https://developers.openai.com/plugins/quickstart)
 
 ## Claude Code
 
@@ -41,7 +42,7 @@ OpenAI's menus differ between plans and have changed recently. Guide: [Connect f
 claude mcp add --transport http findadoctor https://api.findadoctor.si/mcp
 ```
 
-Add `--scope user` to make it available in every project. With an account key, add `--header "Authorization: Bearer $FINDADOCTOR_KEY"`. To share it with a project, put this in `.mcp.json` at the project root:
+Add `--scope user` to make it available in every project. With an account key, add `--header "Authorization: Bearer $FINDADOCTOR_KEY"` (kept in your own Claude Code settings, not in the project). To share it with a project, put this in `.mcp.json` at the project root:
 
 ```json
 {
@@ -53,6 +54,8 @@ Add `--scope user` to make it available in every project. With an account key, a
   }
 }
 ```
+
+`.mcp.json` is usually committed, so never put a key itself in it. If the project needs one, add `"headers": {"Authorization": "Bearer ${FINDADOCTOR_KEY}"}` and let each person set `FINDADOCTOR_KEY`.
 
 ## Codex CLI
 
@@ -87,9 +90,15 @@ Or in `~/.gemini/settings.json` (all projects) or `.gemini/settings.json` (one p
 }
 ```
 
-With an account key, add `--header "Authorization: Bearer $FINDADOCTOR_KEY"` to the command, or a `"headers": {"Authorization": "Bearer <key>"}` object to the server's settings.
+`gemini mcp add` saves to the project's `.gemini/settings.json` unless you add `--scope user`. With an account key, keep it out of project files: use your user settings and refer to the key by its environment variable, which Gemini CLI fills in when it loads the settings:
 
-Guide: [MCP servers with the Gemini CLI](https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md)
+```bash
+gemini mcp add --scope user --transport http --header 'Authorization: Bearer ${FINDADOCTOR_KEY}' findadoctor https://api.findadoctor.si/mcp
+```
+
+The single quotes keep your shell from writing the key itself into the file. In `settings.json` the same is `"headers": {"Authorization": "Bearer ${FINDADOCTOR_KEY}"}`.
+
+Guides: [MCP servers with the Gemini CLI](https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md), [environment variables in settings](https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/configuration.md)
 
 ## Cursor
 

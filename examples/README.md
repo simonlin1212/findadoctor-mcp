@@ -6,8 +6,10 @@ Each example does the same two steps: search for a free short list (atrial fibri
 |---|---|---|
 | [curl/search-and-open.sh](curl/search-and-open.sh) | curl, jq | `bash curl/search-and-open.sh` |
 | [python/http_api.py](python/http_api.py) | Python 3.9+, standard library only | `python3 python/http_api.py` |
-| [python/mcp_client.py](python/mcp_client.py) | Python 3.10+, `pip install "mcp>=2"` | `python3 python/mcp_client.py` |
+| [python/mcp_client.py](python/mcp_client.py) | Python 3.10+, `pip install "mcp>=2,<3"` | `python3 python/mcp_client.py` |
 | [typescript/mcp-client.ts](typescript/mcp-client.ts) | Node.js 18+ | `cd typescript && npm install && npm start` |
+
+Each example prints every doctor's `warnings` first (Medicare opt-out, federal exclusion list, probably not a physician), and exits with a non-zero status if a call fails, for example when the daily allowance is used up. None of them retries.
 
 Set `FINDADOCTOR_KEY` to send an account key. Without one, each network address can open 5 different doctors a day ([Limits](https://findadoctor.si/us/docs/limits/)); running an example again the same day re-opens the same doctor, which is free.
 

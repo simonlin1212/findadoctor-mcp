@@ -12,6 +12,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import sys
 
 import httpx2  # installed with mcp 2.x
 from mcp import ClientSession
@@ -29,7 +30,7 @@ def payload(result) -> dict:
     return json.loads(result.content[0].text)
 
 
-async def main() -> None:
+async def main() -> int:
     headers = {"User-Agent": "findadoctor-example/1.0"}
     if os.environ.get("FINDADOCTOR_KEY"):
         headers["Authorization"] = f"Bearer {os.environ['FINDADOCTOR_KEY']}"
@@ -50,26 +51,32 @@ async def main() -> None:
                         "limit": 5,
                     }))
                 except RuntimeError as e:  # e.g. rate limit: say so, don't retry in a loop
-                    print("Search failed:", e)
-                    return
+                    print("Search failed:", e, file=sys.stderr)
+                    return 1
                 print(f"{found['total_matches']} matches")
                 for w in found.get("warnings") or []:
                     print("warning:", w)
                 for r in found["results"]:
                     print(f"{r['rank']}. {r['name']}, {r.get('degree', '')} | {r.get('specialty', '')} | "
                           f"{r.get('city', '')}, {r.get('state', '')} | {r.get('match_basis', '')}")
+                    for w in r.get("warnings") or []:
+                        print("  ", w)
                 if not found["results"]:
-                    return
+                    return 0
 
                 # Step 2: open the evidence, counted per day. Open only serious candidates.
                 top = found["results"][0]["doctor_id"]
                 try:
                     detail = payload(await session.call_tool("get_doctor", {"doctor_ids": [top]}))
                 except RuntimeError as e:  # daily allowance used up: tell the person, don't retry in a loop
-                    print("Not opened:", e)
-                    return
+                    print("Not opened:", e, file=sys.stderr)
+                    return 1
                 for doc in detail["doctors"]:
-                    print(f"\n{doc['name']}: {doc.get('phone')} ({doc.get('phone_source')})")
+                    print(f"\n{doc['name']}")
+                    # Read each doctor's warnings first (Medicare opt-out, federal exclusion list, probably not a physician).
+                    for w in doc.get("warnings") or []:
+                        print(" ", w)
+                    print(f"  phone: {doc.get('phone')} ({doc.get('phone_source')})")
                     for p in doc.get("signature_procedures_2024") or []:
                         print(f"  {p['label']}: {p['medicare_patient_days']} Medicare patient-days in 2024, "
                               f"#{p['national_rank']} of {p['national_of']} nationally")
@@ -79,7 +86,8 @@ async def main() -> None:
                 # or not at all today (left_out: daily allowance).
                 if detail.get("daily_doctor_limit"):
                     print("\n" + detail["daily_doctor_limit"]["message"])
+                return 0
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    sys.exit(asyncio.run(main()))

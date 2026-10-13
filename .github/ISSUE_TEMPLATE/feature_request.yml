@@ -6,7 +6,8 @@ body:
     attributes:
       value: |
         **In a medical emergency, call 911.** This project can't help in an emergency.
-        This is a public page. Don't include anything about a patient or an account key.
+        This is a public page. Don't include anything about a patient (including your own health details) or an account key.
+        Posted something by mistake? Edit or delete your issue. If it showed an account key, email contact@findadoctor.si so we can turn the key off.
   - type: textarea
     id: need
     attributes:
@@ -14,3 +15,10 @@ body:
       description: What your agent is trying to do, and what is missing.
     validations:
       required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy
+      options:
+        - label: This issue contains no patient information (including my own health details) and no account key.
+          required: true

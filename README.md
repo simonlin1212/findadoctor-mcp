@@ -2,7 +2,7 @@
 
 **Find US doctors for a condition, procedure or place, with sourced evidence for each doctor. Built for AI agents. No sign-up.**
 
-[![FindADoctor.si US page: an illustrative get_doctor query in Houston, TX returns five pediatric endocrinologists, each with its checked sources (NPI, hospital page, MeSH focus). Doctor ids are masked.](docs/images/findadoctor-us.jpg)](https://findadoctor.si/us/)
+[![FindADoctor.si US page: an illustrative get_doctor query in Houston, TX returns five pediatric endocrinologists, each with its checked sources (NPI, hospital page, MeSH focus). The doctor ids are made up and masked.](docs/images/findadoctor-us.jpg)](https://findadoctor.si/us/)
 
 ```text
 https://api.findadoctor.si/mcp
@@ -146,6 +146,6 @@ Search terms are used only to answer the request. They are not logged or stored,
 
 ## License
 
-The contents of this repository (docs, examples, the Agent Skill) are MIT licensed. Use of the service and its data is governed by the [Terms of use](https://findadoctor.si/terms/).
+The contents of this repository (docs, examples, the Agent Skill) are MIT licensed. The license does not cover the service, its data, or the FindADoctor.si and Phoenix Tree names and logos. Use of the service and its data is governed by the [Terms of use](https://findadoctor.si/terms/).
 
 Operated by Phoenix Tree (Phoenix Tree AI).

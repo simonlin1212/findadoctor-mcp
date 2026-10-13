@@ -4,6 +4,10 @@ Generated from the live server's `tools/list` on 2026-10-13 (server version 2026
 
 All tools are read-only. Every MCP tool has an HTTP `GET` equivalent that takes the same parameters (for `get_doctor`, `doctor_ids` is `ids`, comma-separated) and returns the same JSON.
 
+Doctor ids in the descriptions below (such as `dr_4k9m2x7qph3t`, `dr_8w2c5n1kd7ra`) are placeholders written by the server, not real doctors.
+
+On `medicare_patient`: Medicare and Medicare Advantage plans do not pay a doctor who opted out of Medicare, except for emergency or urgent care. Each such doctor's warning says so.
+
 ## `search_doctors`
 
 HTTP: `GET /api/v1/search`

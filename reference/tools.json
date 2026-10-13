@@ -1,5 +1,5 @@
 {
-  "_note": "Snapshot of the live tools/list from https://api.findadoctor.si/mcp. The live server is the source of truth.",
+  "_note": "Snapshot of the live tools/list from https://api.findadoctor.si/mcp. The live server is the source of truth. Doctor ids in the descriptions are placeholders written by the server, not real doctors.",
   "server": {
     "name": "findadoctor-si",
     "title": "FindADoctor.si",

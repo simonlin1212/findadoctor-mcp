@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -37,32 +38,38 @@ def get(path: str, **params: object) -> dict:
         raise RuntimeError(f"HTTP {e.code}: {message}") from None
 
 
-def main() -> None:
+def main() -> int:
     # Step 1: the free short list.
     try:
         found = get("/search", condition="atrial fibrillation", city="Phoenix", state="AZ",
                     within_miles=25, medicare_patient=True, limit=5)
     except RuntimeError as e:  # e.g. rate limit: say so, don't retry in a loop
-        print("Search failed:", e)
-        return
+        print("Search failed:", e, file=sys.stderr)
+        return 1
     print(f"{found['total_matches']} matches")
     for w in found.get("warnings") or []:
         print("warning:", w)
     for r in found["results"]:
         print(f"{r['rank']}. {r['name']}, {r.get('degree', '')} | {r.get('specialty', '')} | "
               f"{r.get('city', '')}, {r.get('state', '')} | {r.get('match_basis', '')}")
+        for w in r.get("warnings") or []:
+            print("  ", w)
     if not found["results"]:
-        return
+        return 0
 
     # Step 2: open the evidence, counted per day. Open only serious candidates (up to 10 ids at once).
     top = found["results"][0]["doctor_id"]
     try:
         detail = get("/doctors", ids=top)
     except RuntimeError as e:  # tell the person; don't retry in a loop
-        print("Not opened:", e)
-        return
+        print("Not opened:", e, file=sys.stderr)
+        return 1
     for doc in detail["doctors"]:
-        print(f"\n{doc['name']}: {doc.get('phone')} ({doc.get('phone_source')})")
+        print(f"\n{doc['name']}")
+        # Read each doctor's warnings first (Medicare opt-out, federal exclusion list, probably not a physician).
+        for w in doc.get("warnings") or []:
+            print(" ", w)
+        print(f"  phone: {doc.get('phone')} ({doc.get('phone_source')})")
         for p in doc.get("signature_procedures_2024") or []:
             print(f"  {p['label']}: {p['medicare_patient_days']} Medicare patient-days in 2024, "
                   f"#{p['national_rank']} of {p['national_of']} nationally")
@@ -76,7 +83,8 @@ def main() -> None:
         print(f"Not opened today: {d['doctor_id']} ({d['reason']})")
     if detail.get("daily_doctor_limit"):
         print("\n" + detail["daily_doctor_limit"]["message"])
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

@@ -8,6 +8,7 @@ body:
         **In a medical emergency, call 911.** This project can't help in an emergency.
         This is a public page. **Don't include anything about a patient** (names, dates of birth, insurance IDs, health details) or an account key.
         To correct a specific doctor's details, use [Corrections and removal](https://findadoctor.si/us/corrections/) instead.
+        Posted something by mistake? Edit or delete your issue. If it showed an account key, email contact@findadoctor.si so we can turn the key off.
   - type: dropdown
     id: area
     attributes:
@@ -30,7 +31,7 @@ body:
     id: what
     attributes:
       label: What happened
-      description: The request (tool and parameters, or the URL) and what came back. Leave out any account key.
+      description: The request (tool and parameters, or the URL) and the part of the reply that looks wrong. Use a general or made-up example if it shows the same problem. Don't paste chat transcripts, whole replies or screenshots that show someone's health details, and leave out any account key.
     validations:
       required: true
   - type: textarea
@@ -42,5 +43,5 @@ body:
     attributes:
       label: Privacy
       options:
-        - label: This issue contains no patient information and no account key.
+        - label: This issue contains no patient information (including my own health details) and no account key.
           required: true

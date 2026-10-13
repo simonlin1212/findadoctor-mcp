@@ -41,13 +41,15 @@ async function main(client: Client): Promise<void> {
     );
   } catch (e) {
     // e.g. rate limit: say so, don't retry in a loop.
-    console.log("Search failed:", (e as Error).message);
+    console.error("Search failed:", (e as Error).message);
+    process.exitCode = 1;
     return;
   }
   console.log(`${found.total_matches} matches`);
   for (const w of found.warnings ?? []) console.log("warning:", w);
   for (const r of found.results) {
     console.log(`${r.rank}. ${r.name}, ${r.degree ?? ""} | ${r.specialty ?? ""} | ${r.city}, ${r.state} | ${r.match_basis ?? ""}`);
+    for (const w of r.warnings ?? []) console.log("  ", w);
   }
   if (found.results.length === 0) return;
 
@@ -59,11 +61,15 @@ async function main(client: Client): Promise<void> {
     );
   } catch (e) {
     // Daily allowance used up: tell the person, don't retry in a loop.
-    console.log("Not opened:", (e as Error).message);
+    console.error("Not opened:", (e as Error).message);
+    process.exitCode = 1;
     return;
   }
   for (const doc of detail.doctors) {
-    console.log(`\n${doc.name}: ${doc.phone} (${doc.phone_source})`);
+    console.log(`\n${doc.name}`);
+    // Read each doctor's warnings first (Medicare opt-out, federal exclusion list, probably not a physician).
+    for (const w of doc.warnings ?? []) console.log(" ", w);
+    console.log(`  phone: ${doc.phone} (${doc.phone_source})`);
     for (const p of doc.signature_procedures_2024 ?? []) {
       console.log(`  ${p.label}: ${p.medicare_patient_days} Medicare patient-days in 2024, #${p.national_rank} of ${p.national_of} nationally`);
     }
