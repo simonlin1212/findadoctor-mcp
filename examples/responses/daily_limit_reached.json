@@ -1,0 +1,38 @@
+{
+  "_example_note": "Sample reply when the daily allowance runs out partway: 3 doctors asked for, 3 already opened today, so 2 are returned and 1 is left out. When a single doctor is asked for and nothing is left, HTTP answers 429 with {\"error\": \"daily_limit\", \"message\": \"...\"} and a Retry-After header, and MCP returns a tool error with the same message. Doctor details are made up and shortened here.",
+  "daily_doctor_limit": {
+    "limit_per_day": 5,
+    "opened_today": 5,
+    "left_today": 0,
+    "left_out_of_this_reply": 1,
+    "message": "This network address can open up to 5 different doctors a day with get_doctor and has opened 5 today; 1 more doctor was left out. Opening a doctor again the same day is free. The free short list (search_doctors) has no doctor limit. The count resets at 00:00 UTC (in about 9 hours). Open only the doctors you are seriously considering, and tell the person if this limits the answer. Connections recognized as coming from an AI platform, or with an account, can open more (see the service's /llms.txt)."
+  },
+  "doctors": [
+    {
+      "provider": {
+        "name": "FindADoctor.si"
+      },
+      "found": true,
+      "doctor_id": "dr_example00001",
+      "name": "Jordan Example",
+      "degree": "MD",
+      "specialty": "Cardiac Electrophysiology"
+    },
+    {
+      "provider": {
+        "name": "FindADoctor.si"
+      },
+      "found": true,
+      "doctor_id": "dr_example00002",
+      "name": "Casey Sample",
+      "degree": "DO",
+      "specialty": "Cardiology (Cardiovascular Disease)"
+    }
+  ],
+  "left_out": [
+    {
+      "doctor_id": "dr_example00003",
+      "reason": "daily doctor limit"
+    }
+  ]
+}

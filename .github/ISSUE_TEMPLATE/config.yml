@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: A doctor's details are wrong (corrections and removal)
+    url: https://findadoctor.si/us/corrections/
+    about: Doctors can ask for a correction or removal there. Please don't post personal details in a public issue.
+  - name: Account keys, higher limits and other support
+    url: https://findadoctor.si/support/
+    about: How to ask for an account key or get help by email.

@@ -1,0 +1,105 @@
+{
+  "_example_note": "Trimmed sample reply. Doctor names, ids, NPIs, phones, addresses and counts are made up; the structure and the service's own texts are real (2026-10-13).",
+  "provider": {
+    "name": "FindADoctor.si",
+    "url": "https://findadoctor.si",
+    "data_version": "public-2026-10-13.2"
+  },
+  "before_answering": "This is the free short list: who the doctors are, not the evidence. Before recommending anyone, call get_doctor with the doctor_ids you are considering (up to 10 at once) for listed focus areas, procedure volumes with national ranks, medical school, phone and addresses, hospital-website facts, languages and new-patient status, and recommend from that evidence, not from this list alone. This database cannot confirm insurance; languages and new-patient status come only from some hospital websites. If the person asked about insurance, a language or new patients, check it on the web (the doctor's official profile or the insurer's directory) for the doctors you plan to recommend. Emergencies (chest pain, stroke signs, severe bleeding, trouble breathing): tell them to call 911 first.",
+  "interpreted": {
+    "condition_mesh": [
+      {
+        "mesh_ui": "D001281",
+        "name": "Atrial Fibrillation",
+        "match": "exact"
+      }
+    ],
+    "broader_terms_included": [
+      "Arrhythmias, Cardiac"
+    ],
+    "volume_from_procedure_groups": [
+      "afib_ablation",
+      "laa_closure"
+    ],
+    "location": {
+      "center": [
+        "Phoenix, AZ"
+      ],
+      "within_miles": 25,
+      "zip_codes_in_area": 144,
+      "note": "distance between ZIP code center points (Census), so edges are approximate; the area can cross state lines (state only picks the city). Each result has distance_miles."
+    },
+    "medicare_patient": "doctors on the CMS Medicare opt-out list are left out (2 removed)"
+  },
+  "total_matches": 436,
+  "offset": 0,
+  "results": [
+    {
+      "rank": 1,
+      "doctor_id": "dr_example00001",
+      "name": "Jordan Example",
+      "degree": "MD",
+      "npi": "1234567893",
+      "specialty": "Cardiac Electrophysiology",
+      "specialty_source": "official records (NPI registry, CMS)",
+      "hospital_website_specialties": [
+        {
+          "site": "Example Health",
+          "specialties": [
+            "Electrophysiology",
+            "Cardiology"
+          ]
+        }
+      ],
+      "city": "Phoenix",
+      "state": "AZ",
+      "distance_miles": 4.2,
+      "match_basis": "direct_evidence",
+      "detail_has": [
+        "hospital_website_profile",
+        "procedure_volume_for_this_need",
+        "many_patients_with_this_condition",
+        "phone",
+        "new_patient_status",
+        "languages"
+      ]
+    },
+    {
+      "rank": 2,
+      "doctor_id": "dr_example00002",
+      "name": "Casey Sample",
+      "degree": "DO",
+      "npi": "1234567891",
+      "specialty": "Cardiology (Cardiovascular Disease)",
+      "specialty_source": "official records (NPI registry, CMS)",
+      "city": "Scottsdale",
+      "state": "AZ",
+      "distance_miles": 11.8,
+      "match_basis": "direct_evidence",
+      "detail_has": [
+        "procedure_volume_for_this_need",
+        "phone"
+      ]
+    },
+    {
+      "rank": 3,
+      "doctor_id": "dr_example00003",
+      "name": "Riley Placeholder",
+      "degree": "MD",
+      "npi": "1234567892",
+      "specialty": "Cardiology (Cardiovascular Disease)",
+      "specialty_source": "official records (NPI registry, CMS)",
+      "city": "Mesa",
+      "state": "AZ",
+      "distance_miles": 16.5,
+      "match_basis": "specialty_fit",
+      "detail_has": [
+        "phone"
+      ]
+    }
+  ],
+  "warnings": [
+    "2 matching doctors are on the CMS Medicare opt-out list and left out because medicare_patient=true."
+  ],
+  "next_step": "Call get_doctor with doctor_ids (up to 10 at once) for the doctors you are considering. This search shows at most 10 at a time and 30 in all (offset up to 20); for other doctors, narrow the need or the place."
+}

@@ -1,0 +1,250 @@
+{
+  "_note": "Snapshot of the live tools/list from https://api.findadoctor.si/mcp. The live server is the source of truth.",
+  "server": {
+    "name": "findadoctor-si",
+    "title": "FindADoctor.si",
+    "version": "2026-10-13.3"
+  },
+  "protocolVersion": "2025-11-25",
+  "fetched": "2026-10-13",
+  "tools": [
+    {
+      "name": "search_doctors",
+      "description": "Free short list of US doctors for a need; use it first whenever the person needs a US doctor: a specialist who focuses on a condition near a place (for a metro area use within_miles), who does the most of a procedure (sort='volume': Medicare 2024 counts with national and state ranks), or checking named doctors (name=...). Each result: doctor_id, name, degree, NPI, specialty (with its source) and the specialties their hospital website lists, city, state, distance_miles, warnings (federal exclusion list, Medicare opt-out, probably not a physician) and detail_has (what get_doctor adds for this doctor). With a condition or procedure, match_basis says whether the doctor has direct evidence for it (a listed focus, procedure volume or many such patients) or only a fitting specialty. Results are ranked by evidence of focus and experience for the need, not by quality or outcomes. Then call get_doctor with the doctor_ids you are considering (up to 10 at once) for the evidence. Up to 10 results per search and paging stops at 30: narrow the need or the place instead of paging. Conditions are matched to NLM MeSH terms (narrower terms and the general condition above it count too), common names such as 'afib' and clinical abbreviations such as 'CAD'; use English medical names when you can. Pass medicare_patient=true for anyone 65 or older or on Medicare. language= and accepting_new_patients=true filter by hospital-website pages, which most doctors do not have here; insurance cannot be filtered: if the person needs a specific plan, language or new-patient availability, find candidates on the web first when you can browse, then check them here by name. Read warnings.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "condition": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Disease, symptom or problem, e.g. 'atrial fibrillation', 'knee osteoarthritis', 'breast cancer', 'migraine'."
+          },
+          "procedure": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Procedure or surgery, e.g. 'knee replacement', 'TAVR', 'cataract surgery', 'Mohs surgery'. See list_procedures."
+          },
+          "specialty": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Specialty id, name, title or family, e.g. 'cardiology', 'cardiologist', 'ENT', 'GI', 'OB/GYN', 'primary care', 'pediatric neurology', 'palliative care', 'orthopaedic-surgery'. See list_specialties."
+          },
+          "state": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "US state, 2-letter code (MA) or full name. With within_miles it only identifies the city (the radius can cross state lines) and is ignored with near_zip."
+          },
+          "city": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "City of a practice location. Alone it matches only that exact city name (suburbs are separate cities); for a metro area add within_miles, e.g. city='Dallas', state='TX', within_miles=25."
+          },
+          "near_zip": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "One or more US ZIP codes, comma-separated. With within_miles: practices within that distance of these ZIPs. Without it: practices in the same 3-digit ZIP areas (one area can be only part of a big metro, e.g. Brooklyn 112 but not Manhattan 100-102)."
+          },
+          "within_miles": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "Search radius in miles around city (give state too) or near_zip, e.g. 25 for a metro area, 5-10 in a dense city such as New York City, Chicago, San Francisco or Boston (25 there spans the whole metro); includes suburbs and can cross state lines. Each result then has distance_miles."
+          },
+          "patient": {
+            "type": "string",
+            "enum": [
+              "adult",
+              "child"
+            ],
+            "description": "adult removes child-only specialties; child lists pediatric specialists and doctors listed on a children's hospital's own website (listed_on_childrens_hospital_website in results) first, unless there is evidence that they mainly treat adults."
+          },
+          "accepting_new_patients": {
+            "type": "boolean",
+            "description": "true keeps only doctors listed as accepting new patients by their hospital website (others are unknown, not 'no'; confirm when booking)."
+          },
+          "language": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Language the doctor speaks other than English, e.g. 'Spanish', 'Mandarin', 'Vietnamese' (several: 'Spanish, Portuguese' = any of them). Keeps only doctors whose hospital website lists it (one site lists office staff's languages too); most doctors have no such page here, so if few results, also search the web."
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "F",
+              "M"
+            ],
+            "description": "Doctor's gender (NPI registry)."
+          },
+          "medicare_patient": {
+            "type": "boolean",
+            "description": "true for a person 65 or older or on Medicare: leaves out doctors on the CMS Medicare opt-out list (Medicare and Medicare Advantage will not pay them). Without it such doctors carry a WARNING in warnings."
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Free-text filter over specialty, medical school, hospitals, medical group and procedure groups, e.g. a hospital name. Insurance is not searchable (some hospital-website lists are shown in results, not filtered); for languages use language."
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Part of the doctor's name. Name searches also return NPI records that are probably not physicians (nurse practitioners, physician assistants, etc.), marked with a WARNING; other searches leave them out."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "evidence",
+              "volume",
+              "standing"
+            ],
+            "description": "evidence (default), volume (best Medicare procedure rank first) or standing (named principal investigator on industry-sponsored research first)."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "description": "Default 10."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 20,
+            "description": "For paging (at most 20, so 30 results in all: narrow the search instead of paging further)."
+          }
+        },
+        "additionalProperties": false
+      },
+      "title": "Search doctors",
+      "annotations": {
+        "title": "Search doctors",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get_doctor",
+      "description": "Evidence for doctors from search_doctors: pass doctor_ids (up to 10 at once), or one doctor_id, or an npi. Each different doctor you open counts toward a daily limit for your connection (replies show daily_doctor_limit when it matters); opening a doctor again the same day is free. Open the doctors you are seriously considering, not every result. One reply holds about 2-3 doctors (1 with detail='full'); the others come back under not_returned_yet, already counted, so call again with those doctor_ids at no extra cost. Full evidence for one doctor; use it to compare or check doctors the person names (by npi) and before recommending. Every doctor: registered specialty, practice locations with phones (phone_source), medical school, hospitals, medical group, Medicare 2024 patients and patient mix, procedure volumes with national ranks, Medicare opt-out and federal exclusion-list checks, and from official files prescribing_2024 (Medicare Part D 2024 summary and top medicines), industry_payments (2024-2025), industry_research_as_principal_investigator and mips_2024 (detail='full' returns them as one official_extras record). Any doctor whose Part D 2024 claims lean clearly toward one condition's medicines has prescribing_signals_2024 (more such patients, not quality). Doctors whose hospital system's own website was read have hospital_websites (per site: focus as standard MeSH terms, languages, education, board certifications, new-patient status, office phones and addresses, page address and date read; at some hospital systems also insurance_listed, the page's insurance list grouped by insurer, a lead to confirm). detail='full' returns every collected field.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "doctor_id": {
+            "type": "string",
+            "maxLength": 20,
+            "pattern": "^dr_[0-9a-z]{12}$",
+            "description": "doctor_id from search_doctors, e.g. 'dr_4k9m2x7qph3t'."
+          },
+          "npi": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "10-digit NPI, instead of doctor_id."
+          },
+          "detail": {
+            "type": "string",
+            "enum": [
+              "summary",
+              "full"
+            ],
+            "description": "Default summary."
+          },
+          "doctor_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "maxLength": 20,
+              "pattern": "^dr_[0-9a-z]{12}$"
+            },
+            "description": "Up to 10 doctor_ids from search_doctors, e.g. ['dr_4k9m2x7qph3t', 'dr_8w2c5n1kd7ra']."
+          }
+        },
+        "additionalProperties": false
+      },
+      "title": "Get doctor",
+      "annotations": {
+        "title": "Get doctor",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "lookup_terms",
+      "description": "Check how a word is understood before searching: matching MeSH condition terms (with how many doctors' hospital-website profiles list each as a focus), procedure groups and specialties.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 200
+          }
+        },
+        "required": [
+          "text"
+        ],
+        "additionalProperties": false
+      },
+      "title": "Lookup terms",
+      "annotations": {
+        "title": "Lookup terms",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "list_procedures",
+      "description": "The 81 signature procedure groups with Medicare 2024 volumes and national ranks (CPT codes, common names, national median per physician).",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "title": "List procedures",
+      "annotations": {
+        "title": "List procedures",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "list_specialties",
+      "description": "All specialties in the database with ids, families and physician counts.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "title": "List specialties",
+      "annotations": {
+        "title": "List specialties",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "about_database",
+      "description": "Sources, build date, coverage counts, scoring method and caveats.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "title": "About database",
+      "annotations": {
+        "title": "About database",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ]
+}

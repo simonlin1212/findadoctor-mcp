@@ -1,0 +1,14 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "si.findadoctor.api/us-doctor-finder",
+  "title": "FindADoctor.si",
+  "description": "Find US doctors for a condition, procedure or place, with sourced evidence. No sign-up needed.",
+  "version": "2026-10-13.3",
+  "websiteUrl": "https://findadoctor.si/",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.findadoctor.si/mcp"
+    }
+  ]
+}

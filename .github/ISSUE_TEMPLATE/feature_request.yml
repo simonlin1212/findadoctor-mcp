@@ -1,0 +1,16 @@
+name: Idea or request
+description: A client you'd like a guide for, a tool or field you need, or a docs improvement.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **In a medical emergency, call 911.** This project can't help in an emergency.
+        This is a public page. Don't include anything about a patient or an account key.
+  - type: textarea
+    id: need
+    attributes:
+      label: What would help
+      description: What your agent is trying to do, and what is missing.
+    validations:
+      required: true

@@ -1,0 +1,211 @@
+{
+  "_example_note": "Trimmed sample reply to get_doctor (HTTP: GET /api/v1/doctors?ids=dr_example00001). Doctor names, ids, NPIs, phones, addresses, schools, companies and numbers are made up; the field names and the service's own explanatory texts are real (2026-10-13). Real replies may carry more sections (prescribing, research payments, warnings) when the official files have them.",
+  "daily_doctor_limit": {
+    "limit_per_day": 5,
+    "opened_today": 1,
+    "left_today": 4,
+    "left_out_of_this_reply": 0,
+    "message": "This network address can open up to 5 different doctors a day with get_doctor and has opened 1 today; 4 left today. …"
+  },
+  "doctors": [
+    {
+      "provider": {
+        "name": "FindADoctor.si",
+        "url": "https://findadoctor.si",
+        "data_version": "public-2026-10-13.2"
+      },
+      "found": true,
+      "doctor_id": "dr_example00001",
+      "npi": "1234567893",
+      "name": "Jordan Example",
+      "degree": "MD",
+      "gender": "F",
+      "specialty": "Cardiac Electrophysiology",
+      "registered_specialty": {
+        "npi_taxonomy": "207RC0001X Clinical Cardiac Electrophysiology Physician",
+        "cms_specialty": "CARDIAC ELECTROPHYSIOLOGY",
+        "cms_secondary_specialties": "CARDIOVASCULAR DISEASE (CARDIOLOGY)",
+        "specialty_matched_by": "crosswalk"
+      },
+      "phone": "602-555-0100",
+      "phone_source": "CMS Doctors and Clinicians file (released 2026-09-10)",
+      "phone_address": "100 EXAMPLE AVE STE 200, PHOENIX, AZ 85006",
+      "practice_locations": [
+        {
+          "address": "100 EXAMPLE AVE STE 200, PHOENIX, AZ 85006",
+          "phone": "602-555-0100",
+          "source": "CMS Doctors and Clinicians file (released 2026-09-10)"
+        }
+      ],
+      "medical_school": "EXAMPLE UNIVERSITY SCHOOL OF MEDICINE",
+      "graduation_year": "2006",
+      "telehealth_cms": true,
+      "groups_cms": [
+        "EXAMPLE HEART GROUP PLLC"
+      ],
+      "hospitals_cms": [
+        {
+          "name": "EXAMPLE MEDICAL CENTER",
+          "city": "PHOENIX",
+          "state": "AZ",
+          "cms_star": 4
+        }
+      ],
+      "medicare_2024": {
+        "patients": 512,
+        "avg_patient_age": 76,
+        "billed_as": "Cardiac Electrophysiology",
+        "patient_mix_high_vs_peers": [
+          {
+            "condition": "Atrial fibrillation",
+            "pct": 68.0,
+            "peer_avg_pct": 38.6,
+            "ratio": 1.76,
+            "z": 12.1
+          }
+        ]
+      },
+      "signature_procedures_2024": [
+        {
+          "procedure_id": "afib_ablation",
+          "label": "Atrial fibrillation catheter ablation",
+          "medicare_patient_days": 88,
+          "national_rank": 140,
+          "national_of": 2265,
+          "top_pct": 6.2,
+          "state": "AZ",
+          "state_rank": 4,
+          "state_of": 62,
+          "national_median": 33.0
+        }
+      ],
+      "industry_payments": {
+        "payments_by_nature": {
+          "2025": [
+            {
+              "type": "Food and Beverage",
+              "n": 14,
+              "usd": 402.15
+            },
+            {
+              "type": "Consulting Fee",
+              "n": 1,
+              "usd": 1500.0
+            }
+          ],
+          "2024": [
+            {
+              "type": "Food and Beverage",
+              "n": 21,
+              "usd": 587.3
+            }
+          ]
+        },
+        "payments_2025_by_type": {
+          "General": {
+            "n": 15,
+            "usd": 1902.15,
+            "companies": 3
+          }
+        },
+        "top_general_companies_2025": [
+          {
+            "company": "Example Devices, Inc.",
+            "type": "General",
+            "n": 9,
+            "usd": 1720.4
+          }
+        ],
+        "note": "Open Payments (CMS): payments reported by drug and device companies. General payments (food, consulting, speaking) show industry ties, not expertise; research payments as principal investigator mean the doctor led company-sponsored studies."
+      },
+      "mips_2024": {
+        "best": {
+          "final_score": 88.0,
+          "source": "group",
+          "national_percentile": 41.0
+        },
+        "rows": [
+          {
+            "source": "group",
+            "final_score": 88.0,
+            "quality": null,
+            "cost": null,
+            "facility_based": null
+          }
+        ],
+        "note": "CMS Merit-based Incentive Payment System 2024 final score (0-100). Usually reported by the practice group, so it reflects the group's reporting more than this doctor's own skill; national_percentile is among all clinicians with a score."
+      },
+      "license_state": "AZ",
+      "record_status": "cms_2026",
+      "npi_registry_last_updated": "03/02/2025",
+      "npi_enumerated": "07/01/2007",
+      "oig_exclusion": null,
+      "medicare_opt_out": null,
+      "caveats": [
+        "Official records (NPI registry, CMS) plus the doctor's profile on Example Health website (read 2026-10-11)."
+      ],
+      "contact_note": "phone and practice_locations are copied from listings, not confirmed booking details: phone_source says where the number comes from and how old it is, and phone_note marks a number listed for many physicians (usually a hospital or group main line). Before giving a phone or address as the way to book, confirm the booking phone, office address and spoken languages on the doctor's current official profile (hospital or practice website). If you cannot check, tell the person where the number comes from and that it may be out of date.",
+      "not_collected": [
+        "biography",
+        "research (NIH grants, trial registry, publications)",
+        "insurance",
+        "reviews"
+      ],
+      "more": "detail='full' returns the raw official record.",
+      "hospital_websites": [
+        {
+          "site": "Example Health",
+          "checked": "2026-10-11",
+          "urls": [
+            "https://www.example.org/doctors/jordan-example"
+          ],
+          "name_on_page": "Jordan Example, MD",
+          "matched_by": "NPI on the page",
+          "specialties": [
+            "Electrophysiology",
+            "Cardiology"
+          ],
+          "languages": [
+            "English",
+            "Spanish"
+          ],
+          "education": [
+            "Example University School of Medicine",
+            "Example University Hospital"
+          ],
+          "certifications": [
+            "American Board of Internal Medicine - Clinical Cardiac Electrophysiology"
+          ],
+          "accepting_new_patients": true,
+          "focus_mesh": [
+            {
+              "mesh": "Atrial Fibrillation",
+              "from": "listed"
+            },
+            {
+              "mesh": "Catheter Ablation",
+              "from": "listed"
+            },
+            {
+              "mesh": "Tachycardia, Supraventricular",
+              "from": "listed"
+            }
+          ],
+          "phones": [
+            "602-555-0101"
+          ],
+          "addresses": [
+            {
+              "street": "100 Example Ave Ste 200",
+              "city": "Phoenix",
+              "state": "AZ",
+              "zip": "85006"
+            }
+          ]
+        }
+      ],
+      "accepting_new_patients": true,
+      "accepting_new_patients_source": "hospital website (Example Health), read 2026-10-11"
+    }
+  ]
+}
