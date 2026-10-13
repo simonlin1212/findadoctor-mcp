@@ -10,6 +10,11 @@ No sign-in is needed. If you have an account key (for a higher daily allowance),
 
 Client menus change often. These steps were checked against each client's own guide or CLI help on 2026-10-12 and 2026-10-13. If a step no longer matches, follow the linked guide and [open an issue](https://github.com/simonlin1212/findadoctor-mcp/issues/new/choose) so we can update this page.
 
+## One-step installs
+
+- **Cursor** and **VS Code**: the **Add to Cursor** and **Add to VS Code** buttons at the top of the [README](../README.md) add the server for you.
+- **Claude Code**, **Codex CLI** and **Gemini CLI**: this repository is also a plugin that adds the MCP server and the `findadoctor` Agent Skill together. See [Install as a plugin](../README.md#install-as-a-plugin). The steps below add only the MCP server.
+
 ## Claude (claude.ai and Claude Desktop)
 
 Available on Free, Pro, Max, Team and Enterprise. The Free plan allows one custom connector.

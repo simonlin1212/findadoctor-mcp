@@ -1,0 +1,18 @@
+{
+  "name": "findadoctor",
+  "owner": {
+    "name": "Phoenix Tree",
+    "url": "https://findadoctor.si"
+  },
+  "metadata": {
+    "description": "Official FindADoctor.si plugin: find US doctors with evidence your AI agent can check."
+  },
+  "plugins": [
+    {
+      "name": "findadoctor",
+      "source": "./",
+      "description": "Find US doctors for a condition, procedure or place, with sourced evidence for each doctor. No sign-up.",
+      "category": "health"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "findadoctor-mcp",
+  "version": "2026.10.13",
+  "description": "Find US doctors for a condition, procedure or place, with sourced evidence for each doctor. No sign-up.",
+  "mcpServers": {
+    "findadoctor": {
+      "httpUrl": "https://api.findadoctor.si/mcp"
+    }
+  }
+}

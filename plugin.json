@@ -1,0 +1,23 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "findadoctor",
+  "version": "2026.10.13",
+  "description": "Find US doctors for a condition, procedure or place, with sourced evidence for each doctor. Remote MCP server plus the findadoctor Agent Skill. No sign-up.",
+  "author": {
+    "name": "Phoenix Tree",
+    "url": "https://findadoctor.si"
+  },
+  "homepage": "https://findadoctor.si/us/docs/",
+  "repository": "https://github.com/simonlin1212/findadoctor-mcp",
+  "license": "MIT",
+  "keywords": ["mcp", "healthcare", "doctors", "physicians", "medicare", "npi", "find-a-doctor", "united-states"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "FindADoctor.si",
+        "shortDescription": "Find US doctors with evidence your agent can check",
+        "category": "Health"
+      }
+    }
+  }
+}
