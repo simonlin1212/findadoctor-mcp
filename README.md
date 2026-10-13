@@ -2,6 +2,8 @@
 
 **Find US doctors for a condition, procedure or place, with sourced evidence for each doctor. Built for AI agents. No sign-up.**
 
+[![FindADoctor.si US page: an illustrative get_doctor query in Houston, TX returns five pediatric endocrinologists, each with its checked sources (NPI, hospital page, MeSH focus). Doctor ids are masked.](docs/images/findadoctor-us.jpg)](https://findadoctor.si/us/)
+
 ```text
 https://api.findadoctor.si/mcp
 ```
