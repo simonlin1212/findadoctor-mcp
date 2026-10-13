@@ -3,7 +3,7 @@
   "server": {
     "name": "findadoctor-si",
     "title": "FindADoctor.si",
-    "version": "2026-10-13.3"
+    "version": "2026-10-13.4"
   },
   "protocolVersion": "2025-11-25",
   "fetched": "2026-10-13",
@@ -77,7 +77,7 @@
           },
           "medicare_patient": {
             "type": "boolean",
-            "description": "true for a person 65 or older or on Medicare: leaves out doctors on the CMS Medicare opt-out list (Medicare and Medicare Advantage will not pay them). Without it such doctors carry a WARNING in warnings."
+            "description": "true for a person 65 or older or on Medicare: leaves out doctors on the CMS Medicare opt-out list (Medicare and Medicare Advantage plans will not pay them except for emergency or urgent care). Without it such doctors carry a WARNING in warnings."
           },
           "text": {
             "type": "string",

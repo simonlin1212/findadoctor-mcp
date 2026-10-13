@@ -1,12 +1,10 @@
 # Tool reference
 
-Generated from the live server's `tools/list` on 2026-10-13 (server version 2026-10-13.3). The live server is the source of truth: [`reference/tools.json`](../reference/tools.json) is the same list as JSON, and [`openapi.json`](https://api.findadoctor.si/openapi.json) describes the HTTP API and the reply fields.
+Generated from the live server's `tools/list` on 2026-10-13 (server version 2026-10-13.4). The live server is the source of truth: [`reference/tools.json`](../reference/tools.json) is the same list as JSON, and [`openapi.json`](https://api.findadoctor.si/openapi.json) describes the HTTP API and the reply fields.
 
 All tools are read-only. Every MCP tool has an HTTP `GET` equivalent that takes the same parameters (for `get_doctor`, `doctor_ids` is `ids`, comma-separated) and returns the same JSON.
 
 Doctor ids in the descriptions below (such as `dr_4k9m2x7qph3t`, `dr_8w2c5n1kd7ra`) are placeholders written by the server, not real doctors.
-
-On `medicare_patient`: Medicare and Medicare Advantage plans do not pay a doctor who opted out of Medicare, except for emergency or urgent care. Each such doctor's warning says so.
 
 ## `search_doctors`
 
@@ -27,7 +25,7 @@ Free short list of US doctors for a need; use it first whenever the person needs
 | `accepting_new_patients` | boolean | true keeps only doctors listed as accepting new patients by their hospital website (others are unknown, not 'no'; confirm when booking). |
 | `language` | string | Language the doctor speaks other than English, e.g. 'Spanish', 'Mandarin', 'Vietnamese' (several: 'Spanish, Portuguese' = any of them). Keeps only doctors whose hospital website lists it (one site lists office staff's languages too); most doctors have no such page here, so if few results, also search the web. |
 | `gender` | `F` \\| `M` | Doctor's gender (NPI registry). |
-| `medicare_patient` | boolean | true for a person 65 or older or on Medicare: leaves out doctors on the CMS Medicare opt-out list (Medicare and Medicare Advantage will not pay them). Without it such doctors carry a WARNING in warnings. |
+| `medicare_patient` | boolean | true for a person 65 or older or on Medicare: leaves out doctors on the CMS Medicare opt-out list (Medicare and Medicare Advantage plans will not pay them except for emergency or urgent care). Without it such doctors carry a WARNING in warnings. |
 | `text` | string | Free-text filter over specialty, medical school, hospitals, medical group and procedure groups, e.g. a hospital name. Insurance is not searchable (some hospital-website lists are shown in results, not filtered); for languages use language. |
 | `name` | string | Part of the doctor's name. Name searches also return NPI records that are probably not physicians (nurse practitioners, physician assistants, etc.), marked with a WARNING; other searches leave them out. |
 | `sort` | `evidence` \\| `volume` \\| `standing` | evidence (default), volume (best Medicare procedure rank first) or standing (named principal investigator on industry-sponsored research first). |
