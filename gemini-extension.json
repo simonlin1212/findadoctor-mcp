@@ -1,10 +1,13 @@
 {
   "name": "findadoctor-mcp",
-  "version": "2026.10.13",
-  "description": "Find US doctors for a condition, procedure or place, with sourced evidence for each doctor. No sign-up.",
+  "version": "2026.10.15",
+  "description": "Find doctors in the United States and New Zealand for a condition, procedure or place, with sourced evidence for each doctor. No sign-up.",
   "mcpServers": {
     "findadoctor": {
       "httpUrl": "https://api.findadoctor.si/mcp"
+    },
+    "findadoctor-nz": {
+      "httpUrl": "https://api-nz.findadoctor.si/mcp"
     }
   }
 }

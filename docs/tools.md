@@ -1,6 +1,6 @@
 # Tool reference
 
-Generated from the live server's `tools/list` on 2026-10-13 (server version 2026-10-13.4). The live server is the source of truth: [`reference/tools.json`](../reference/tools.json) is the same list as JSON, and [`openapi.json`](https://api.findadoctor.si/openapi.json) describes the HTTP API and the reply fields.
+Generated from the live server's `tools/list` on 2026-10-15 (server version 2026-10-15.1). The live server is the source of truth: [`reference/tools.json`](../reference/tools.json) is the same list as JSON, and [`openapi.json`](https://api.findadoctor.si/openapi.json) describes the HTTP API and the reply fields.
 
 All tools are read-only. Every MCP tool has an HTTP `GET` equivalent that takes the same parameters (for `get_doctor`, `doctor_ids` is `ids`, comma-separated) and returns the same JSON.
 

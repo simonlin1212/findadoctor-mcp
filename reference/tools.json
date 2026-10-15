@@ -3,10 +3,10 @@
   "server": {
     "name": "findadoctor-si",
     "title": "FindADoctor.si",
-    "version": "2026-10-13.4"
+    "version": "2026-10-15.1"
   },
   "protocolVersion": "2025-11-25",
-  "fetched": "2026-10-13",
+  "fetched": "2026-10-15",
   "tools": [
     {
       "name": "search_doctors",

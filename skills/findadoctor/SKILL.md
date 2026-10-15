@@ -1,12 +1,13 @@
 ---
 name: findadoctor
-description: Find and check US doctors with FindADoctor.si (official US records, Medicare 2024 procedure volumes with national ranks, facts from hospital systems' own websites). Use when a person needs a US doctor or specialist for a condition or procedure, asks who does the most of a procedure near them, or wants to check a named US doctor. Works over MCP or a plain HTTP API, with no sign-up.
+description: Find and check doctors in the United States and New Zealand with FindADoctor.si. US - official records, Medicare 2024 procedure volumes with national ranks, facts from hospital systems' own websites. New Zealand - the Medical Council register, doctors' own Healthpoint listings, GP practices taking new patients, Health NZ public waiting lists. Use when a person in either country needs a doctor, specialist or GP for a condition or procedure, asks who does the most of a procedure near them, or wants to check a named doctor. Works over MCP or a plain HTTP API, with no sign-up.
 license: MIT
-compatibility: Needs network access to https://api.findadoctor.si (MCP over Streamable HTTP, or HTTP GET). Web browsing helps to confirm phones, insurance and languages.
+compatibility: Needs network access to https://api.findadoctor.si (US) or https://api-nz.findadoctor.si (New Zealand), over MCP (Streamable HTTP) or HTTP GET. Web browsing helps to confirm phones, insurance and languages.
 metadata:
   homepage: https://findadoctor.si
   mcp-endpoint: https://api.findadoctor.si/mcp
-  updated: "2026-10-13"
+  mcp-endpoint-nz: https://api-nz.findadoctor.si/mcp
+  updated: "2026-10-15"
 ---
 
 # Find a US doctor with FindADoctor.si
@@ -19,9 +20,9 @@ FindADoctor.si holds about 1.2 million US physicians with an active NPI record, 
 - "Who does the most knee replacements / AFib ablations / cataract surgeries near me?"
 - The person wants to check a named US doctor: specialty, training, procedure volume, hospital, whether they are on the federal exclusion list or opted out of Medicare.
 
-Use it before or together with web search. Do not use it for doctors outside the US.
+Use it before or together with web search. For a person in New Zealand, see [New Zealand](#new-zealand) below; the rest of this guide is about the US server. Do not use it for doctors in other countries.
 
-**Emergency first.** For chest pain, stroke signs, severe bleeding, trouble breathing or anything that may be an emergency, tell the person to call 911 now. Do not search first.
+**Emergency first.** For chest pain, stroke signs, severe bleeding, trouble breathing or anything that may be an emergency, tell the person to call 911 now (111 in New Zealand). Do not search first.
 
 ## How to reach it
 
@@ -86,6 +87,25 @@ Never send the person's name, date of birth, insurance member ID or other identi
 - Say clearly what is confirmed and what is still unknown, especially insurance, new-patient status and languages.
 - Give the phone with its source, and say to confirm booking details with the office.
 - For anyone on Medicare, never recommend a doctor with a Medicare opt-out warning.
-- Remind them this is not medical advice, and to call 911 in an emergency.
+- Remind them this is not medical advice, and to call 911 in an emergency (111 in New Zealand).
 
-More detail: the MCP resource `findadoctor://guide/how-to-use`, `https://findadoctor.si/us/docs/`, and `https://findadoctor.si/llms.txt`.
+## New Zealand
+
+A separate server with its own tools and its own daily allowance: MCP `https://api-nz.findadoctor.si/mcp`, tools `search_doctors`, `get_doctor`, `search_gp_practices`, `list_specialties`, `public_waitlist`, `about_database`. If both servers are connected, use this one for anyone in New Zealand (the tool names are the same as some US ones, so check which server you are calling). Without MCP, the same tools are HTTP `GET` endpoints:
+
+- `https://api-nz.findadoctor.si/api/v1/search?need=...&place=...`
+- `https://api-nz.findadoctor.si/api/v1/doctors?ids=nz_...,nz_...`
+- `https://api-nz.findadoctor.si/api/v1/gp-practices?place=...&enrolling=yes&age=...`
+- `https://api-nz.findadoctor.si/api/v1/waitlist?specialty=...&district=...`, `/specialties`, `/about`
+- Full description: `https://api-nz.findadoctor.si/openapi.json` and `https://api-nz.findadoctor.si/llms.txt`.
+
+In New Zealand a specialist usually needs a GP referral. Public care is free but has waiting lists; private care is paid by the person or their insurer.
+
+1. Ask what changes the search: the condition or procedure, the town or region, a child or an adult, public or private, and whether they are insured (Southern Cross, nib and others).
+2. `search_doctors` with `need` (plain English) and `place` (city, suburb, region or Health NZ district). `sector="private"` or `"public"` if they have decided; `child=true` for a child; `experienced_first=true` if they want a senior specialist; `southern_cross_affiliated=true` if that matters to them. Read `match_basis`: `stated_focus` (the doctor lists this) is stronger than `specialty`. Entries with `listing` `medical_council_register_only` have no clinic details. Two entries that point to each other in `possibly_same_person_as` may be one doctor: don't present them as two.
+3. `get_doctor` for the 2-4 doctors you will recommend (up to 10 per call). Without an account: 5 different doctors per network address per day, counted separately from the US. Read `warnings` (for example, not practising) first.
+4. Needs a GP, or has none: `search_gp_practices` with `place`, `enrolling="yes"` and the person's `age` (each result shows the fee for that age). Practices don't count toward the doctor allowance. `kind="urgent_care"` finds urgent care clinics for care that is urgent but not an emergency.
+5. Public or private: `public_waitlist` with the specialty and district shows how many people wait for a first specialist assessment and for treatment, and the share waiting over 120 days.
+6. Tell the person to confirm fees, insurer cover (often prior approval) and availability with the clinic and the insurer. There are no procedure volumes, outcomes, ratings or private wait times for New Zealand doctors; years as a specialist, honours and academic titles are seniority, not quality.
+
+More detail: the MCP resource `findadoctor://guide/how-to-use`, `https://findadoctor.si/us/docs/`, `https://findadoctor.si/nz/docs/`, and `https://findadoctor.si/llms.txt`.

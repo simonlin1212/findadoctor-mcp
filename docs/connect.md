@@ -1,10 +1,13 @@
 # Connect FindADoctor.si to your agent
 
-MCP endpoint (Streamable HTTP):
+MCP endpoints (Streamable HTTP), one per country:
 
 ```text
-https://api.findadoctor.si/mcp
+https://api.findadoctor.si/mcp       United States
+https://api-nz.findadoctor.si/mcp    New Zealand
 ```
+
+The steps below use the US server. For New Zealand, repeat them with the New Zealand URL under its own name, such as `findadoctor-nz` (for example `claude mcp add --transport http findadoctor-nz https://api-nz.findadoctor.si/mcp`). The two servers have different tools and count their daily allowances separately; an account key works only on the server it was issued for.
 
 No sign-in is needed. If you have an account key (for a higher daily allowance), send it as the header `Authorization: Bearer <key>`.
 
@@ -159,7 +162,7 @@ Guide: [Add and manage MCP servers in VS Code](https://code.visualstudio.com/doc
 
 ## Any other MCP client
 
-Use Streamable HTTP with the URL above. The server supports MCP protocol versions `2025-11-25`, `2025-06-18` and `2025-03-26`. Its [server card](https://api.findadoctor.si/mcp/server-card) and [MCP Registry entry](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api%2Fus-doctor-finder/versions/latest) describe it in machine-readable form. When it connects, the server also sends usage instructions, and the `findadoctor://guide/how-to-use` resource holds the full guide.
+Use Streamable HTTP with the URL above. The server supports MCP protocol versions `2025-11-25`, `2025-06-18` and `2025-03-26`. Its [server card](https://api.findadoctor.si/mcp/server-card) and [MCP Registry entry](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api%2Fus-doctor-finder/versions/latest) describe it in machine-readable form; for New Zealand, the [server card](https://api-nz.findadoctor.si/mcp/server-card) and [registry entry](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api-nz%2Fnz-doctor-finder/versions/latest). When it connects, the server also sends usage instructions, and the `findadoctor://guide/how-to-use` resource holds the full guide.
 
 ## No MCP: the HTTP API
 
@@ -170,4 +173,4 @@ https://api.findadoctor.si/api/v1/search?condition=...&city=...&state=...
 https://api.findadoctor.si/api/v1/doctors?ids=dr_...,dr_...
 ```
 
-OpenAPI 3.1 description: https://api.findadoctor.si/openapi.json. An agent that can only fetch web pages can follow the [Agent Skill](../skills/findadoctor/SKILL.md) or [`/llms.txt`](https://findadoctor.si/llms.txt).
+OpenAPI 3.1 description: https://api.findadoctor.si/openapi.json (New Zealand: https://api-nz.findadoctor.si/openapi.json). An agent that can only fetch web pages can follow the [Agent Skill](../skills/findadoctor/SKILL.md) or [`/llms.txt`](https://findadoctor.si/llms.txt).

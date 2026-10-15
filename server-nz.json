@@ -1,0 +1,14 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "si.findadoctor.api-nz/nz-doctor-finder",
+  "title": "FindADoctor.si New Zealand",
+  "description": "Find New Zealand doctors and GP practices by condition, procedure or place, with sources. No signup.",
+  "version": "nz-2026-10-15.2",
+  "websiteUrl": "https://findadoctor.si/nz/",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api-nz.findadoctor.si/mcp"
+    }
+  ]
+}
