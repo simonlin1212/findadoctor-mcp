@@ -6,7 +6,7 @@
 
 <p align="center">
   <b>Find doctors for a condition, procedure or place, with sourced evidence for each doctor.</b><br>
-  Remote MCP servers and HTTP APIs built for AI agents, one per country: the United States and New Zealand. No sign-up, no API key.
+  One remote MCP server for every country (the United States and New Zealand), plus an HTTP API per country, built for AI agents. No sign-up, no API key.
 </p>
 
 <p align="center">
@@ -40,27 +40,32 @@
 
 ## Quick start
 
-United States:
+One address for every country:
 
 ```text
 https://api.findadoctor.si/mcp
 ```
 
-New Zealand ([details below](#new-zealand)):
+Paste it into any MCP client that supports remote servers. There is no sign-in and no key. Or let your agent set it up; paste this into it:
 
 ```text
-https://api-nz.findadoctor.si/mcp
-```
-
-Paste a URL into any MCP client that supports remote servers. There is no sign-in and no key. Most of this page is about the US server; the New Zealand server works the same way with its own tools. Or let your agent set it up; paste this into it:
-
-```text
-Connect the FindADoctor.si MCP servers to this client: https://api.findadoctor.si/mcp
-(US) and https://api-nz.findadoctor.si/mcp (New Zealand), both Streamable HTTP, no
-authentication. Read https://findadoctor.si/llms.txt first. If this client supports Agent
-Skills, also install the findadoctor skill from
+Connect the FindADoctor.si MCP server to this client: https://api.findadoctor.si/mcp
+(Streamable HTTP, no authentication; one address for the United States and New Zealand).
+Read https://findadoctor.si/llms.txt first. If this client supports Agent Skills, also
+install the findadoctor skill from
 https://github.com/simonlin1212/findadoctor-mcp/tree/main/skills/findadoctor
 ```
+
+### Country first
+
+- The agent decides the country first: where the person wants to see a doctor, from the place they mention or what it knows about where they live.
+- If nothing settles it (no place given, or a place name used in more than one country, such as Hamilton, with no other clue), it asks the person before searching. It does not guess, and it does not search every country.
+- Then it passes `country` (`US` or `NZ`) to `search_doctors`, `list_specialties` and `about_database`. Doctor ids carry their country (`dr_` = United States, `nz_` = New Zealand), so `get_doctor` needs no `country`.
+- `country` is for MCP only. The HTTP APIs are per country, each on its own host, and take no `country`.
+- Searches without `country` use the United States, so clients that connected before New Zealand was added work as before.
+- Each country keeps its own daily allowance. New Zealand also has a New Zealand-only address ([details below](#new-zealand)).
+
+Most of this page is about the United States; [New Zealand](#new-zealand) has its own section with its own tools.
 
 ## ❌ Without / ✅ With FindADoctor.si
 
@@ -99,7 +104,7 @@ More: "Is Dr. X really a hand surgeon, and where did they train?" · "Which knee
 
 ## Connect
 
-No sign-in, no API key. Point any MCP client that supports remote servers at the URL above.
+No sign-in, no API key. Point any MCP client that supports remote servers at the URL above; it covers every country.
 
 | Client | How |
 |---|---|
@@ -144,19 +149,19 @@ Other clients that read [Agent Plugins](https://agent-plugins.org) can use [`plu
 
 Two steps:
 
-1. **`search_doctors`**: a free short list for a need (condition, procedure, specialty, place or name). It tells you who the doctors are and what evidence each one has, not the evidence itself.
+1. **`search_doctors`** (over MCP with `country: "US"` or no `country`; the HTTP API takes no `country`): a free short list for a need (condition, procedure, specialty, place or name). It tells you who the doctors are and what evidence each one has, not the evidence itself.
 2. **`get_doctor`**: the evidence for up to 10 doctors per call. This is counted per day, so open only the doctors you are seriously considering. One reply holds about 2–3 doctors; the rest come back under `not_returned_yet`, already counted, so ask again for them at no extra cost.
 
 | MCP tool | HTTP API | What it does |
 |---|---|---|
 | `search_doctors` | `GET /api/v1/search` | Free short list for a need. |
 | `get_doctor` | `GET /api/v1/doctors?ids=…` | Evidence for up to 10 doctors, or one by `npi`. Counted per day. |
-| `lookup_terms` | `GET /api/v1/terms?text=…` | How a word is understood: MeSH conditions, procedure groups, specialties. |
-| `list_procedures` | `GET /api/v1/procedures` | The 81 procedure groups with Medicare 2024 volumes. |
+| `lookup_terms` | `GET /api/v1/terms?text=…` | How a word is understood: MeSH conditions, procedure groups, specialties. United States only. |
+| `list_procedures` | `GET /api/v1/procedures` | The 81 procedure groups with Medicare 2024 volumes. United States only. |
 | `list_specialties` | `GET /api/v1/specialties` | Specialty names and ids. |
 | `about_database` | `GET /api/v1/about` | Sources, build date, coverage, scoring and caveats. |
 
-Every parameter and field: [docs/tools.md](docs/tools.md), [`reference/tools.json`](reference/tools.json) and [`openapi.json`](https://api.findadoctor.si/openapi.json).
+Every parameter: [docs/tools.md](docs/tools.md) and [`reference/tools.json`](reference/tools.json) (all tools at the one address, both countries). Every field of the US HTTP API: [`openapi.json`](https://api.findadoctor.si/openapi.json).
 
 ### Example
 
@@ -208,7 +213,7 @@ As of 2026-10-13, during the public test. The current values are always on the [
 - Searching does not count toward the doctor allowance. Opening the same doctor again the same UTC day is free.
 - Connections from the Claude and ChatGPT apps, recognized by the network addresses Anthropic and OpenAI publish, have their own allowances (ChatGPT: 100 per user; Claude: one shared allowance for all its users). See [`/llms.txt`](https://api.findadoctor.si/llms.txt).
 - When the allowance runs out, the reply says so and when it resets (00:00 UTC). An agent should tell the person, not retry in a loop.
-- Need more? Email contact@findadoctor.si with what your agent does to ask for an account key (sent as `Authorization: Bearer`).
+- Need more? Email contact@findadoctor.si with what your agent does to ask for an account key (sent as `Authorization: Bearer`). Keys are issued for the United States; through the one address, New Zealand searches use the allowance without an account.
 
 ## Data (United States)
 
@@ -227,11 +232,15 @@ Rankings show evidence of focus and experience for a need, not quality of care. 
 
 ## New Zealand
 
+Through the one address, `https://api.findadoctor.si/mcp`, search with `country: "NZ"`. `get_doctor` reads the country from the `nz_` id, and `search_gp_practices` and `public_waitlist` are New Zealand only. No sign-up and the same two steps: a free short list, then evidence for the doctors you are considering.
+
+There is also a New Zealand-only address, which needs no `country`:
+
 ```text
 https://api-nz.findadoctor.si/mcp
 ```
 
-A separate server for New Zealand, with no sign-up and the same two steps: a free short list, then evidence for the doctors you are considering. Add it under its own name next to the US one, for example:
+Use it if you want New Zealand alone, for example:
 
 ```bash
 claude mcp add --transport http findadoctor-nz https://api-nz.findadoctor.si/mcp
@@ -239,7 +248,7 @@ codex mcp add findadoctor-nz --url https://api-nz.findadoctor.si/mcp
 gemini mcp add --transport http findadoctor-nz https://api-nz.findadoctor.si/mcp
 ```
 
-In Claude, ChatGPT, Cursor and VS Code, add it the same way as the [US server](docs/connect.md) with this URL. The [plugins](#install-as-a-plugin) add both servers.
+You don't need both addresses: the one address already covers New Zealand, and connecting both shows the agent the New Zealand tools twice. The [plugins](#install-as-a-plugin) connect the one address.
 
 | MCP tool | HTTP API | What it does |
 |---|---|---|
@@ -250,7 +259,7 @@ In Claude, ChatGPT, Cursor and VS Code, add it the same way as the [US server](d
 | `public_waitlist` | `GET /api/v1/waitlist` | Health NZ public waiting lists by district and specialty. |
 | `about_database` | `GET /api/v1/about` | Sources, read dates, coverage and known gaps. |
 
-Every parameter: [docs/tools-nz.md](docs/tools-nz.md), [`reference/tools-nz.json`](reference/tools-nz.json) and [`openapi.json`](https://api-nz.findadoctor.si/openapi.json). Docs: [findadoctor.si/nz/docs/](https://findadoctor.si/nz/docs/).
+The HTTP API is at `https://api-nz.findadoctor.si`. Every parameter: [docs/tools.md](docs/tools.md) (the one address, where these tools take `country: "NZ"`), [docs/tools-nz.md](docs/tools-nz.md) and [`reference/tools-nz.json`](reference/tools-nz.json) (the New Zealand-only address), and [`openapi.json`](https://api-nz.findadoctor.si/openapi.json). Docs: [findadoctor.si/nz/docs/](https://findadoctor.si/nz/docs/).
 
 ### Try asking
 
@@ -276,7 +285,7 @@ Sources: Healthpoint, the Medical Council of New Zealand register, Health New Ze
 
 What it does **not** have: insurer cover (confirm with the insurer, often prior approval), appointment availability or private wait times, procedure volumes or outcomes for individual doctors, and clinic details for doctors who are only on the register (many public-hospital doctors and psychiatrists). Results are ordered by how directly the doctor's own listing matches the need. No ratings, reviews or rankings are used.
 
-Limits: 5 different doctors opened with `get_doctor` per network address per day without an account, 30 requests a minute and 300 a day. Searches and GP practice lists don't count toward the doctor allowance. The two countries count separately. Current values: [Limits](https://findadoctor.si/nz/docs/limits/).
+Limits: 5 different doctors opened with `get_doctor` per network address per day without an account, 30 requests a minute and 300 a day. Searches and GP practice lists don't count toward the doctor allowance. The two countries count separately, also through the one address. Current values: [Limits](https://findadoctor.si/nz/docs/limits/).
 
 ## Agent Skill
 
@@ -289,8 +298,8 @@ This is the official guide for connecting to the service, for both countries. Th
 | Path | What it is |
 |---|---|
 | [`docs/connect.md`](docs/connect.md) | Setup for each client |
-| [`docs/tools.md`](docs/tools.md), [`reference/tools.json`](reference/tools.json) | US tool reference, generated from the live server |
-| [`docs/tools-nz.md`](docs/tools-nz.md), [`reference/tools-nz.json`](reference/tools-nz.json) | New Zealand tool reference, generated from the live server |
+| [`docs/tools.md`](docs/tools.md), [`reference/tools.json`](reference/tools.json) | Tool reference for the one address (both countries), generated from the live server |
+| [`docs/tools-nz.md`](docs/tools-nz.md), [`reference/tools-nz.json`](reference/tools-nz.json) | Tool reference for the New Zealand-only address, generated from the live server |
 | [`examples/`](examples) | Sample replies and runnable examples (curl, Python, TypeScript) |
 | [`skills/findadoctor/`](skills/findadoctor/SKILL.md) | The Agent Skill |
 | [`.claude-plugin/`](.claude-plugin), [`plugin.json`](plugin.json), [`mcp.json`](mcp.json), [`.agents/plugins/`](.agents/plugins), [`gemini-extension.json`](gemini-extension.json) | Plugin manifests for Claude Code, Codex and other Agent Plugins clients, and Gemini CLI |

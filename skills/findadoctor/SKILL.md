@@ -2,7 +2,7 @@
 name: findadoctor
 description: Find and check doctors in the United States and New Zealand with FindADoctor.si. US - official records, Medicare 2024 procedure volumes with national ranks, facts from hospital systems' own websites. New Zealand - the Medical Council register, doctors' own Healthpoint listings, GP practices taking new patients, Health NZ public waiting lists. Use when a person in either country needs a doctor, specialist or GP for a condition or procedure, asks who does the most of a procedure near them, or wants to check a named doctor. Works over MCP or a plain HTTP API, with no sign-up.
 license: MIT
-compatibility: Needs network access to https://api.findadoctor.si (US) or https://api-nz.findadoctor.si (New Zealand), over MCP (Streamable HTTP) or HTTP GET. Web browsing helps to confirm phones, insurance and languages.
+compatibility: Needs network access to https://api.findadoctor.si (one MCP endpoint for both countries, and the US HTTP API) or https://api-nz.findadoctor.si (New Zealand HTTP API and New Zealand-only MCP endpoint), over MCP (Streamable HTTP) or HTTP GET. Web browsing helps to confirm phones, insurance and languages.
 metadata:
   homepage: https://findadoctor.si
   mcp-endpoint: https://api.findadoctor.si/mcp
@@ -10,7 +10,7 @@ metadata:
   updated: "2026-10-15"
 ---
 
-# Find a US doctor with FindADoctor.si
+# Find a doctor with FindADoctor.si
 
 FindADoctor.si holds about 1.2 million US physicians with an active NPI record, from official records (NPI registry, CMS files, Medicare 2024 claims) and, for about 280,000 of them, facts from their hospital system's own website. It shows evidence of focus and experience for a need. It is not medical advice and does not rate quality of care.
 
@@ -20,13 +20,23 @@ FindADoctor.si holds about 1.2 million US physicians with an active NPI record, 
 - "Who does the most knee replacements / AFib ablations / cataract surgeries near me?"
 - The person wants to check a named US doctor: specialty, training, procedure volume, hospital, whether they are on the federal exclusion list or opted out of Medicare.
 
-Use it before or together with web search. For a person in New Zealand, see [New Zealand](#new-zealand) below; the rest of this guide is about the US server. Do not use it for doctors in other countries.
+Use it before or together with web search. For a person in New Zealand, see [New Zealand](#new-zealand) below; the rest of this guide is about the United States. Do not use it for doctors in other countries.
+
+## First: which country
+
+One MCP server, `https://api.findadoctor.si/mcp`, covers the United States and New Zealand.
+
+1. Decide the country before searching: where the person wants to see a doctor, from the place they mention or what you know about where they live.
+2. If nothing settles it (no place given, or a place name used in more than one country, such as Hamilton, with no other clue), ask the person. Do not guess, and do not search every country.
+3. Pass `country="US"` or `country="NZ"` to `search_doctors`, `list_specialties` and `about_database`. Left out, it is the United States (for clients set up before New Zealand was added). `get_doctor` reads the country from the doctor id (`dr_` = United States, `nz_` = New Zealand); open one country's doctors per call.
+4. A tool that works for one country says so at the start of its description: `lookup_terms` and `list_procedures` (United States), `search_gp_practices` and `public_waitlist` (New Zealand).
+5. `country` is for MCP only. Over HTTP, each country has its own host (`api.findadoctor.si` for the United States, `api-nz.findadoctor.si` for New Zealand), and sending `country` is an error.
 
 **Emergency first.** For chest pain, stroke signs, severe bleeding, trouble breathing or anything that may be an emergency, tell the person to call 911 now (111 in New Zealand). Do not search first.
 
 ## How to reach it
 
-- **MCP tools** (if connected): `search_doctors`, `get_doctor`, `lookup_terms`, `list_procedures`, `list_specialties`, `about_database`. Server: `https://api.findadoctor.si/mcp`.
+- **MCP tools** (if connected): `search_doctors`, `get_doctor`, `lookup_terms`, `list_procedures`, `list_specialties`, `about_database`, plus the [New Zealand](#new-zealand) tools. Server: `https://api.findadoctor.si/mcp`; for the United States pass `country="US"` or leave it out.
 - **No MCP:** the same tools are HTTP `GET` endpoints that return the same JSON:
   - `https://api.findadoctor.si/api/v1/search?condition=...&city=...&state=...&within_miles=25`
   - `https://api.findadoctor.si/api/v1/doctors?ids=dr_...,dr_...` (or `?npi=...`)
@@ -48,7 +58,7 @@ Never send the person's name, date of birth, insurance member ID or other identi
 
 ## Flow
 
-1. `search_doctors` with the need and a place:
+1. `search_doctors` with the need and a place (over MCP add `country="US"`):
    - `condition="atrial fibrillation"` or `procedure="knee replacement"` or `specialty=...`; `lookup_terms` shows how a word is understood.
    - A metro area: `city` + `state` + `within_miles=25`. In a dense city (New York City, Chicago, San Francisco, Boston) start with 5-10 miles. Or `near_zip` + `within_miles`. `city` alone matches only that exact city, not its suburbs.
    - 65 or older, or on Medicare: `medicare_patient=true` (leaves out doctors who opted out of Medicare).
@@ -91,7 +101,7 @@ Never send the person's name, date of birth, insurance member ID or other identi
 
 ## New Zealand
 
-A separate server with its own tools and its own daily allowance: MCP `https://api-nz.findadoctor.si/mcp`, tools `search_doctors`, `get_doctor`, `search_gp_practices`, `list_specialties`, `public_waitlist`, `about_database`. If both servers are connected, use this one for anyone in New Zealand (the tool names are the same as some US ones, so check which server you are calling). Without MCP, the same tools are HTTP `GET` endpoints:
+Through the one server, `https://api.findadoctor.si/mcp`, pass `country="NZ"` to `search_doctors`, `list_specialties` and `about_database`; `get_doctor` reads the country from the `nz_` id; `search_gp_practices` and `public_waitlist` are New Zealand only. New Zealand has its own daily allowance. There is also a New Zealand-only MCP endpoint, `https://api-nz.findadoctor.si/mcp`, where no `country` is needed (tools `search_doctors`, `get_doctor`, `search_gp_practices`, `list_specialties`, `public_waitlist`, `about_database`); if it is connected too, either works for New Zealand, so check which server you are calling. Without MCP, the same tools are HTTP `GET` endpoints:
 
 - `https://api-nz.findadoctor.si/api/v1/search?need=...&place=...`
 - `https://api-nz.findadoctor.si/api/v1/doctors?ids=nz_...,nz_...`
@@ -102,10 +112,10 @@ A separate server with its own tools and its own daily allowance: MCP `https://a
 In New Zealand a specialist usually needs a GP referral. Public care is free but has waiting lists; private care is paid by the person or their insurer.
 
 1. Ask what changes the search: the condition or procedure, the town or region, a child or an adult, public or private, and whether they are insured (Southern Cross, nib and others).
-2. `search_doctors` with `need` (plain English) and `place` (city, suburb, region or Health NZ district). `sector="private"` or `"public"` if they have decided; `child=true` for a child; `experienced_first=true` if they want a senior specialist; `southern_cross_affiliated=true` if that matters to them. Read `match_basis`: `stated_focus` (the doctor lists this) is stronger than `specialty`. Entries with `listing` `medical_council_register_only` have no clinic details. Two entries that point to each other in `possibly_same_person_as` may be one doctor: don't present them as two.
+2. `search_doctors` (over the one MCP server add `country="NZ"`) with `need` (plain English) and `place` (city, suburb, region or Health NZ district). `sector="private"` or `"public"` if they have decided; `child=true` for a child; `experienced_first=true` if they want a senior specialist; `southern_cross_affiliated=true` if that matters to them. Read `match_basis`: `stated_focus` (the doctor lists this) is stronger than `specialty`. Entries with `listing` `medical_council_register_only` have no clinic details. Two entries that point to each other in `possibly_same_person_as` may be one doctor: don't present them as two.
 3. `get_doctor` for the 2-4 doctors you will recommend (up to 10 per call). Without an account: 5 different doctors per network address per day, counted separately from the US. Read `warnings` (for example, not practising) first.
 4. Needs a GP, or has none: `search_gp_practices` with `place`, `enrolling="yes"` and the person's `age` (each result shows the fee for that age). Practices don't count toward the doctor allowance. `kind="urgent_care"` finds urgent care clinics for care that is urgent but not an emergency.
 5. Public or private: `public_waitlist` with the specialty and district shows how many people wait for a first specialist assessment and for treatment, and the share waiting over 120 days.
 6. Tell the person to confirm fees, insurer cover (often prior approval) and availability with the clinic and the insurer. There are no procedure volumes, outcomes, ratings or private wait times for New Zealand doctors; years as a specialist, honours and academic titles are seniority, not quality.
 
-More detail: the MCP resource `findadoctor://guide/how-to-use`, `https://findadoctor.si/us/docs/`, `https://findadoctor.si/nz/docs/`, and `https://findadoctor.si/llms.txt`.
+More detail: the MCP resources `findadoctor://guide/how-to-use` (United States) and `findadoctor-nz://guide/how-to-use` (New Zealand), `https://findadoctor.si/us/docs/`, `https://findadoctor.si/nz/docs/`, and `https://findadoctor.si/llms.txt`.

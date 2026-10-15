@@ -43,6 +43,7 @@ async def main() -> int:
                 # Step 1: the free short list.
                 try:
                     found = payload(await session.call_tool("search_doctors", {
+                        "country": "US",  # this address serves every country; decide the country first
                         "condition": "atrial fibrillation",
                         "city": "Phoenix",
                         "state": "AZ",

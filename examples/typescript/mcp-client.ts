@@ -30,6 +30,7 @@ async function main(client: Client): Promise<void> {
       (await client.callTool({
         name: "search_doctors",
         arguments: {
+          country: "US", // this address serves every country; decide the country first
           condition: "atrial fibrillation",
           city: "Phoenix",
           state: "AZ",

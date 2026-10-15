@@ -9,6 +9,8 @@ Each example does the same two steps: search for a free short list (atrial fibri
 | [python/mcp_client.py](python/mcp_client.py) | Python 3.10+, `pip install "mcp>=2,<3"` | `python3 python/mcp_client.py` |
 | [typescript/mcp-client.ts](typescript/mcp-client.ts) | Node.js 18+ | `cd typescript && npm install && npm start` |
 
+The examples search the United States. The MCP address serves every country, so the MCP examples pass `country: "US"` (New Zealand is `country: "NZ"`); the HTTP API in the curl and `http_api.py` examples is for the United States only and takes no `country`.
+
 Each example prints every doctor's `warnings` first (Medicare opt-out, federal exclusion list, probably not a physician), and exits with a non-zero status if a call fails, for example when the daily allowance is used up. None of them retries.
 
 Set `FINDADOCTOR_KEY` to send an account key. Without one, each network address can open 5 different doctors a day ([Limits](https://findadoctor.si/us/docs/limits/)); running an example again the same day re-opens the same doctor, which is free.
@@ -19,4 +21,4 @@ The live replies contain real doctors' names and contact details from public rec
 - [get_doctor.json](responses/get_doctor.json): the evidence for one doctor.
 - [daily_limit_reached.json](responses/daily_limit_reached.json): what comes back when the daily allowance runs out.
 
-All examples were run against the live service on 2026-10-13.
+The MCP examples were last run against the live service on 2026-10-15, the curl and `http_api.py` examples on 2026-10-13.

@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "findadoctor",
-  "version": "2026.10.15",
-  "description": "Find doctors in the United States and New Zealand for a condition, procedure or place, with sourced evidence for each doctor. Remote MCP servers plus the findadoctor Agent Skill. No sign-up.",
+  "version": "2026.10.15.1",
+  "description": "Find doctors in the United States and New Zealand for a condition, procedure or place, with sourced evidence for each doctor. One remote MCP server for both countries plus the findadoctor Agent Skill. No sign-up.",
   "author": {
     "name": "Phoenix Tree",
     "url": "https://findadoctor.si"

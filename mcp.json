@@ -4,10 +4,6 @@
     "findadoctor": {
       "type": "streamable-http",
       "url": "https://api.findadoctor.si/mcp"
-    },
-    "findadoctor-nz": {
-      "type": "streamable-http",
-      "url": "https://api-nz.findadoctor.si/mcp"
     }
   }
 }
