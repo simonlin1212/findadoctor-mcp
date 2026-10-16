@@ -1,8 +1,8 @@
 {
   "name": "findadoctor",
   "displayName": "FindADoctor.si",
-  "version": "2026.10.15.1",
-  "description": "Find doctors in the United States and New Zealand for a condition, procedure or place, with sourced evidence for each doctor. One remote MCP server for both countries plus the findadoctor Agent Skill. No sign-up.",
+  "version": "2026.10.16.1",
+  "description": "Find doctors in the United States, New Zealand and France for a condition, procedure or place, with sourced evidence for each doctor. One remote MCP server for every country plus the findadoctor Agent Skill. No sign-up.",
   "author": {
     "name": "Phoenix Tree",
     "url": "https://findadoctor.si"
@@ -19,7 +19,8 @@
     "npi",
     "find-a-doctor",
     "united-states",
-    "new-zealand"
+    "new-zealand",
+    "france"
   ],
   "documentationUrl": "https://findadoctor.si/us/docs/",
   "supportUrl": "https://github.com/simonlin1212/findadoctor-mcp/issues",

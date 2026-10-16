@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "si.findadoctor.api/us-doctor-finder",
   "title": "FindADoctor.si",
-  "description": "Find US and New Zealand doctors by condition, procedure or place, with sourced evidence. No sign-up.",
-  "version": "2026-10-15.1",
+  "description": "Find US, New Zealand and France doctors by condition, procedure or place, with sources. No sign-up.",
+  "version": "2026-10-16.1",
   "websiteUrl": "https://findadoctor.si/",
   "remotes": [
     {

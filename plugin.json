@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "findadoctor",
-  "version": "2026.10.15.1",
-  "description": "Find doctors in the United States and New Zealand for a condition, procedure or place, with sourced evidence for each doctor. One remote MCP server for both countries plus the findadoctor Agent Skill. No sign-up.",
+  "version": "2026.10.16.1",
+  "description": "Find doctors in the United States, New Zealand and France for a condition, procedure or place, with sourced evidence for each doctor. One remote MCP server for every country plus the findadoctor Agent Skill. No sign-up.",
   "author": {
     "name": "Phoenix Tree",
     "url": "https://findadoctor.si"
@@ -19,13 +19,14 @@
     "npi",
     "find-a-doctor",
     "united-states",
-    "new-zealand"
+    "new-zealand",
+    "france"
   ],
   "extensions": {
     "com.openai": {
       "interface": {
         "displayName": "FindADoctor.si",
-        "shortDescription": "Find US and New Zealand doctors with evidence your agent can check",
+        "shortDescription": "Find US, New Zealand and France doctors with evidence your agent can check",
         "category": "Health"
       }
     }

@@ -9,7 +9,7 @@ Each example does the same two steps: search for a free short list (atrial fibri
 | [python/mcp_client.py](python/mcp_client.py) | Python 3.10+, `pip install "mcp>=2,<3"` | `python3 python/mcp_client.py` |
 | [typescript/mcp-client.ts](typescript/mcp-client.ts) | Node.js 18+ | `cd typescript && npm install && npm start` |
 
-The examples search the United States. The MCP address serves every country, so the MCP examples pass `country: "US"` (New Zealand is `country: "NZ"`); the HTTP API in the curl and `http_api.py` examples is for the United States only and takes no `country`.
+The examples search the United States. The MCP address serves every country, so the MCP examples pass `country: "US"` (New Zealand is `country: "NZ"`, France `country: "FR"`); the HTTP API in the curl and `http_api.py` examples is for the United States only and takes no `country`.
 
 Each example prints every doctor's `warnings` first (Medicare opt-out, federal exclusion list, probably not a physician), and exits with a non-zero status if a call fails, for example when the daily allowance is used up. None of them retries.
 

@@ -1,13 +1,14 @@
 ---
 name: findadoctor
-description: Find and check doctors in the United States and New Zealand with FindADoctor.si. US - official records, Medicare 2024 procedure volumes with national ranks, facts from hospital systems' own websites. New Zealand - the Medical Council register, doctors' own Healthpoint listings, GP practices taking new patients, Health NZ public waiting lists. Use when a person in either country needs a doctor, specialist or GP for a condition or procedure, asks who does the most of a procedure near them, or wants to check a named doctor. Works over MCP or a plain HTTP API, with no sign-up.
+description: Find and check doctors in the United States, New Zealand and France with FindADoctor.si. US - official records, Medicare 2024 procedure volumes with national ranks, facts from hospital systems' own websites. New Zealand - the Medical Council register, doctors' own Healthpoint listings, GP practices taking new patients, Health NZ public waiting lists. France - the RPPS register, Assurance Maladie fee categories, official competences and diplomas, Open CCAM hospital procedure volumes. Use when a person in one of these countries needs a doctor, specialist or GP for a condition or procedure, asks who does the most of a procedure near them, or wants to check a named doctor. Works over MCP or a plain HTTP API, with no sign-up.
 license: MIT
-compatibility: Needs network access to https://api.findadoctor.si (one MCP endpoint for both countries, and the US HTTP API) or https://api-nz.findadoctor.si (New Zealand HTTP API and New Zealand-only MCP endpoint), over MCP (Streamable HTTP) or HTTP GET. Web browsing helps to confirm phones, insurance and languages.
+compatibility: Needs network access to https://api.findadoctor.si (one MCP endpoint for every country, and the US HTTP API), https://api-nz.findadoctor.si (New Zealand HTTP API and New Zealand-only MCP endpoint) or https://api-fr.findadoctor.si (France HTTP API and France-only MCP endpoint), over MCP (Streamable HTTP) or HTTP GET. Web browsing helps to confirm phones, insurance and languages.
 metadata:
   homepage: https://findadoctor.si
   mcp-endpoint: https://api.findadoctor.si/mcp
   mcp-endpoint-nz: https://api-nz.findadoctor.si/mcp
-  updated: "2026-10-15"
+  mcp-endpoint-fr: https://api-fr.findadoctor.si/mcp
+  updated: "2026-10-16"
 ---
 
 # Find a doctor with FindADoctor.si
@@ -20,23 +21,23 @@ FindADoctor.si holds about 1.2 million US physicians with an active NPI record, 
 - "Who does the most knee replacements / AFib ablations / cataract surgeries near me?"
 - The person wants to check a named US doctor: specialty, training, procedure volume, hospital, whether they are on the federal exclusion list or opted out of Medicare.
 
-Use it before or together with web search. For a person in New Zealand, see [New Zealand](#new-zealand) below; the rest of this guide is about the United States. Do not use it for doctors in other countries.
+Use it before or together with web search. For a person in New Zealand or France, see [New Zealand](#new-zealand) or [France](#france) below; the rest of this guide is about the United States. Do not use it for doctors in other countries.
 
 ## First: which country
 
-One MCP server, `https://api.findadoctor.si/mcp`, covers the United States and New Zealand.
+One MCP server, `https://api.findadoctor.si/mcp`, covers the United States, New Zealand and France.
 
 1. Decide the country before searching: where the person wants to see a doctor, from the place they mention or what you know about where they live.
 2. If nothing settles it (no place given, or a place name used in more than one country, such as Hamilton, with no other clue), ask the person. Do not guess, and do not search every country.
-3. Pass `country="US"` or `country="NZ"` to `search_doctors`, `list_specialties` and `about_database`. Left out, it is the United States (for clients set up before New Zealand was added). `get_doctor` reads the country from the doctor id (`dr_` = United States, `nz_` = New Zealand); open one country's doctors per call.
-4. A tool that works for one country says so at the start of its description: `lookup_terms` and `list_procedures` (United States), `search_gp_practices` and `public_waitlist` (New Zealand).
-5. `country` is for MCP only. Over HTTP, each country has its own host (`api.findadoctor.si` for the United States, `api-nz.findadoctor.si` for New Zealand), and sending `country` is an error.
+3. Pass `country="US"`, `country="NZ"` or `country="FR"` to `search_doctors`, `list_specialties` and `about_database`. Left out, it is the United States (for clients set up before other countries were added). `get_doctor` reads the country from the doctor id (`dr_` = United States, `nz_` = New Zealand, `fr_` = France); open one country's doctors per call.
+4. A tool that works for one country says so at the start of its description: `lookup_terms` and `list_procedures` (United States), `search_gp_practices` and `public_waitlist` (New Zealand), `hospital_procedure_volumes` (France).
+5. `country` is for MCP only. Over HTTP, each country has its own host (`api.findadoctor.si` for the United States, `api-nz.findadoctor.si` for New Zealand, `api-fr.findadoctor.si` for France), and sending `country` is an error.
 
-**Emergency first.** For chest pain, stroke signs, severe bleeding, trouble breathing or anything that may be an emergency, tell the person to call 911 now (111 in New Zealand). Do not search first.
+**Emergency first.** For chest pain, stroke signs, severe bleeding, trouble breathing or anything that may be an emergency, tell the person to call 911 now (111 in New Zealand, 15 or 112 in France). Do not search first.
 
 ## How to reach it
 
-- **MCP tools** (if connected): `search_doctors`, `get_doctor`, `lookup_terms`, `list_procedures`, `list_specialties`, `about_database`, plus the [New Zealand](#new-zealand) tools. Server: `https://api.findadoctor.si/mcp`; for the United States pass `country="US"` or leave it out.
+- **MCP tools** (if connected): `search_doctors`, `get_doctor`, `lookup_terms`, `list_procedures`, `list_specialties`, `about_database`, plus the [New Zealand](#new-zealand) and [France](#france) tools. Server: `https://api.findadoctor.si/mcp`; for the United States pass `country="US"` or leave it out.
 - **No MCP:** the same tools are HTTP `GET` endpoints that return the same JSON:
   - `https://api.findadoctor.si/api/v1/search?condition=...&city=...&state=...&within_miles=25`
   - `https://api.findadoctor.si/api/v1/doctors?ids=dr_...,dr_...` (or `?npi=...`)
@@ -97,7 +98,7 @@ Never send the person's name, date of birth, insurance member ID or other identi
 - Say clearly what is confirmed and what is still unknown, especially insurance, new-patient status and languages.
 - Give the phone with its source, and say to confirm booking details with the office.
 - For anyone on Medicare, never recommend a doctor with a Medicare opt-out warning.
-- Remind them this is not medical advice, and to call 911 in an emergency (111 in New Zealand).
+- Remind them this is not medical advice, and to call 911 in an emergency (111 in New Zealand, 15 or 112 in France).
 
 ## New Zealand
 
@@ -118,4 +119,21 @@ In New Zealand a specialist usually needs a GP referral. Public care is free but
 5. Public or private: `public_waitlist` with the specialty and district shows how many people wait for a first specialist assessment and for treatment, and the share waiting over 120 days.
 6. Tell the person to confirm fees, insurer cover (often prior approval) and availability with the clinic and the insurer. There are no procedure volumes, outcomes, ratings or private wait times for New Zealand doctors; years as a specialist, honours and academic titles are seniority, not quality.
 
-More detail: the MCP resources `findadoctor://guide/how-to-use` (United States) and `findadoctor-nz://guide/how-to-use` (New Zealand), `https://findadoctor.si/us/docs/`, `https://findadoctor.si/nz/docs/`, and `https://findadoctor.si/llms.txt`.
+## France
+
+Through the one server, `https://api.findadoctor.si/mcp`, pass `country="FR"` to `search_doctors`, `list_specialties` and `about_database`; `get_doctor` reads the country from the `fr_` id; `hospital_procedure_volumes` is France only. France has its own daily allowance. There is also a France-only MCP endpoint, `https://api-fr.findadoctor.si/mcp`, where no `country` is needed (tools `search_doctors`, `get_doctor`, `hospital_procedure_volumes`, `list_specialties`, `about_database`). Without MCP, the same tools are HTTP `GET` endpoints:
+
+- `https://api-fr.findadoctor.si/api/v1/search?need=...&place=...`
+- `https://api-fr.findadoctor.si/api/v1/doctors?ids=fr_...,fr_...`
+- `https://api-fr.findadoctor.si/api/v1/procedure-volumes?procedure=...&place=...`, `/specialties`, `/about`
+- Full description: `https://api-fr.findadoctor.si/openapi.json` and `https://api-fr.findadoctor.si/llms.txt`.
+
+Reply in the language the person wrote in, not in French just because the data is French: translate it. In France, adults are reimbursed best when their declared GP (médecin traitant) refers them to a specialist; gynaecologists, ophthalmologists, psychiatrists and stomatologists can be seen directly as long as a GP is declared, and under-16s need no referral. Secteur 1 doctors charge the standard fee, Secteur 2 doctors may charge more, and OPTAM doctors agree to limit their extra fees.
+
+1. Ask what changes the search: the condition or procedure, the town, postcode or département, a child or an adult, and whether standard fees matter to them.
+2. `search_doctors` (over the one MCP server add `country="FR"`) with `need` (French or English) and `place`. Add `specialty` if you know it. `fee_sector="secteur_1"` keeps standard fees; `"secteur_1_or_optam"` also keeps doctors who agreed to limit extra fees. Filter by language or gender only when the person asks: languages are known only for doctors with a Maiia or hospital page. Read `match_basis`: `stated_expertise` and `official_competence` are stronger than `specialty` or `specialty_usually_treats`. Most French doctors have only official data, so many good doctors show only their specialty: say so, and add a web search.
+3. `get_doctor` for the 2-4 doctors you will recommend (up to 10 per call). Without an account: 5 different doctors per network address per day, counted separately from the other countries. Each practice has its own phone and fee category. `industry_links` (Transparence Santé) is what drug and device companies declared: mention it only when relevant, as declared, and never as a sign of skill or wrongdoing.
+4. Surgery or a procedure: `hospital_procedure_volumes` with the procedure and place shows which hospitals and clinics nearby do it most (Open CCAM, 2021-2025). It is free and per hospital, not per surgeon. Then search for doctors at that hospital (`hospital_finess`, or its postcode plus the specialty).
+5. Tell the person to confirm the phone, fees, availability and booking (Doctolib, Maiia or the practice), and whether the doctor takes new patients. There are no outcomes, ratings or waiting times for French doctors.
+
+More detail: the MCP resources `findadoctor://guide/how-to-use` (United States), `findadoctor-nz://guide/how-to-use` (New Zealand) and `findadoctor-fr://guide/how-to-use` (France), `https://findadoctor.si/us/docs/`, `https://findadoctor.si/nz/docs/`, `https://findadoctor.si/fr/docs/`, and `https://findadoctor.si/llms.txt`.

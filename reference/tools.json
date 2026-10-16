@@ -3,14 +3,14 @@
   "server": {
     "name": "findadoctor-si",
     "title": "FindADoctor.si",
-    "version": "gw-2026-10-15.3"
+    "version": "gw-2026-10-16.1"
   },
   "protocolVersion": "2025-11-25",
-  "fetched": "2026-10-15",
+  "fetched": "2026-10-16",
   "tools": [
     {
       "name": "search_doctors",
-      "description": "Free short list of doctors for a need in one country; use it first whenever the person needs a doctor. Set country to where the person wants to be seen: United States (country=US), New Zealand (country=NZ); if that is unclear, ask them before searching. Parameters marked (US only) or (NZ only) work for that country only.\n\nUnited States (country=US): Free short list of US doctors for a need; use it first whenever the person needs a US doctor: a specialist who focuses on a condition near a place (for a metro area use within_miles), who does the most of a procedure (sort='volume': Medicare 2024 counts with national and state ranks), or checking named doctors (name=...). Each result: doctor_id, name, degree, NPI, specialty (with its source) and the specialties their hospital website lists, city, state, distance_miles, warnings (federal exclusion list, Medicare opt-out, probably not a physician) and detail_has (what get_doctor adds for this doctor). With a condition or procedure, match_basis says whether the doctor has direct evidence for it (a listed focus, procedure volume or many such patients) or only a fitting specialty. Results are ranked by evidence of focus and experience for the need, not by quality or outcomes. Then call get_doctor with the doctor_ids you are considering (up to 10 at once) for the evidence. Up to 10 results per search and paging stops at 30: narrow the need or the place instead of paging. Conditions are matched to NLM MeSH terms (narrower terms and the general condition above it count too), common names such as 'afib' and clinical abbreviations such as 'CAD'; use English medical names when you can. Pass medicare_patient=true for anyone 65 or older or on Medicare. language= and accepting_new_patients=true filter by hospital-website pages, which most doctors do not have here; insurance cannot be filtered: if the person needs a specific plan, language or new-patient availability, find candidates on the web first when you can browse, then check them here by name. Read warnings.\n\nNew Zealand (country=NZ): Free short list of New Zealand doctors for a need; use it first whenever the person needs a doctor or specialist in New Zealand. Give at least one of need, specialty, place or name. need = a condition, procedure or focus in plain English (e.g. 'ACL reconstruction', 'endometriosis', 'skin cancer', 'cataract surgery'); it is matched against the focus areas doctors list first, then the procedures their services list, their specialty, and their own profile text (not shown here). specialty = a name from list_specialties, a word from one (e.g. 'orthopaedic', 'ENT') or a plain word (e.g. 'eye', 'skin', 'heart'); matched word by word (word endings may differ, e.g. 'cardiologist', 'paediatrician'; not fragments inside words), and the reply's specialty_read_as lists the specialty names used. place = a New Zealand city, suburb, or region or Health NZ district (e.g. 'Christchurch', 'North Shore', 'Hawke's Bay', 'Hutt Valley'); when a town search leaves out doctors listed only on the wider region's page or in its other towns, place_note says how many and which place to use instead. Each result: doctor_id, name, specialties, vocational scope, cities, sectors (private, public), match_basis (with a need: stated_focus, services_listed (the doctor's own or a small practice's service page), shared_service_listed (a hospital department or large group page they are linked to, so not necessarily done by this doctor), specialty, specialty_for_symptom (the need is a symptom few doctors list, and their specialty usually sees it; need_note says which specialties), profile_text or partial), place_match (with a place: city_or_address, city_in_region, address_contains or region_page_only), warnings (e.g. not practising on the Medical Council register), specialist_since (year first on the Medical Council vocational, i.e. specialist, register in New Zealand), recognition (New Zealand honours, University of Auckland title), listing (medical_council_register_only when the doctor has no clinic listing here), possibly_same_person_as (another entry with the same name that may be the same doctor) and detail_has (what get_doctor adds). General practitioners are left out unless specialty is general practice (e.g. 'GP') or a name is given; to find a GP clinic use search_gp_practices. Doctors only on the register are included when practising with a specialist scope (any status with a name). Results are ranked first by how directly the doctor's own listing matches the need (doctors who list all its words; then, when the need is a symptom such as back pain, doctors whose specialty usually sees it; then doctors who list some of the words; then words only in profile text), then by place_match (with a place); with experienced_first, longer as a specialist next. Doctors known only from the Medical Council register (no clinic listing) come after all others. Not ranked by quality or outcomes. Then call get_doctor with the doctor_ids you are considering. Up to 10 results per search and paging stops at 30: narrow the need or the place instead of paging.",
+      "description": "Free short list of doctors for a need in one country; use it first whenever the person needs a doctor. Set country to where the person wants to be seen: United States (country=US), New Zealand (country=NZ), France (country=FR); if that is unclear, ask them before searching. Parameters marked (US only), (NZ only) or (FR only) work for that country only.\n\nUnited States (country=US): Free short list of US doctors for a need; use it first whenever the person needs a US doctor: a specialist who focuses on a condition near a place (for a metro area use within_miles), who does the most of a procedure (sort='volume': Medicare 2024 counts with national and state ranks), or checking named doctors (name=...). Each result: doctor_id, name, degree, NPI, specialty (with its source) and the specialties their hospital website lists, city, state, distance_miles, warnings (federal exclusion list, Medicare opt-out, probably not a physician) and detail_has (what get_doctor adds for this doctor). With a condition or procedure, match_basis says whether the doctor has direct evidence for it (a listed focus, procedure volume or many such patients) or only a fitting specialty. Results are ranked by evidence of focus and experience for the need, not by quality or outcomes. Then call get_doctor with the doctor_ids you are considering (up to 10 at once) for the evidence. Up to 10 results per search and paging stops at 30: narrow the need or the place instead of paging. Conditions are matched to NLM MeSH terms (narrower terms and the general condition above it count too), common names such as 'afib' and clinical abbreviations such as 'CAD'; use English medical names when you can. Pass medicare_patient=true for anyone 65 or older or on Medicare. language= and accepting_new_patients=true filter by hospital-website pages, which most doctors do not have here; insurance cannot be filtered: if the person needs a specific plan, language or new-patient availability, find candidates on the web first when you can browse, then check them here by name. Read warnings.\n\nNew Zealand (country=NZ): Free short list of New Zealand doctors for a need; use it first whenever the person needs a doctor or specialist in New Zealand. Give at least one of need, specialty, place or name. need = a condition, procedure or focus in plain English (e.g. 'ACL reconstruction', 'endometriosis', 'skin cancer', 'cataract surgery'); it is matched against the focus areas doctors list first, then the procedures their services list, their specialty, and their own profile text (not shown here). specialty = a name from list_specialties, a word from one (e.g. 'orthopaedic', 'ENT') or a plain word (e.g. 'eye', 'skin', 'heart'); matched word by word (word endings may differ, e.g. 'cardiologist', 'paediatrician'; not fragments inside words), and the reply's specialty_read_as lists the specialty names used. place = a New Zealand city, suburb, or region or Health NZ district (e.g. 'Christchurch', 'North Shore', 'Hawke's Bay', 'Hutt Valley'); when a town search leaves out doctors listed only on the wider region's page or in its other towns, place_note says how many and which place to use instead. Each result: doctor_id, name, specialties, vocational scope, cities, sectors (private, public), match_basis (with a need: stated_focus, services_listed (the doctor's own or a small practice's service page), shared_service_listed (a hospital department or large group page they are linked to, so not necessarily done by this doctor), specialty, specialty_for_symptom (the need is a symptom few doctors list, and their specialty usually sees it; need_note says which specialties), profile_text or partial), place_match (with a place: city_or_address, city_in_region, address_contains or region_page_only), warnings (e.g. not practising on the Medical Council register), specialist_since (year first on the Medical Council vocational, i.e. specialist, register in New Zealand), recognition (New Zealand honours, University of Auckland title), listing (medical_council_register_only when the doctor has no clinic listing here), possibly_same_person_as (another entry with the same name that may be the same doctor) and detail_has (what get_doctor adds). General practitioners are left out unless specialty is general practice (e.g. 'GP') or a name is given; to find a GP clinic use search_gp_practices. Doctors only on the register are included when practising with a specialist scope (any status with a name). Results are ranked first by how directly the doctor's own listing matches the need (doctors who list all its words; then, when the need is a symptom such as back pain, doctors whose specialty usually sees it; then doctors who list some of the words; then words only in profile text), then by place_match (with a place); with experienced_first, longer as a specialist next. Doctors known only from the Medical Council register (no clinic listing) come after all others. Not ranked by quality or outcomes. Then call get_doctor with the doctor_ids you are considering. Up to 10 results per search and paging stops at 30: narrow the need or the place instead of paging.\n\nFrance (country=FR): Free short list of doctors in France for a need; use it first whenever the person needs a doctor, specialist or GP in France. Give at least one of need, specialty, place, name or hospital_finess. need = condition, procedure or focus, in French or English (e.g. 'endométriose', 'prothèse genou', 'knee replacement', 'cataract'; common English words are also searched in French); matched against the expertise and procedures doctors state, their official competences and university diplomas, hospital departments and roles, and specialty. specialty = French or English (e.g. 'cardiologie', 'dermatology', 'pédiatre', 'ORL', 'GP', 'généraliste'). place = city ('Lyon', 'Paris' includes all arrondissements), postcode ('75015'), arrondissement ('Paris 15', 'Lyon 3e'), département number ('69', '2A') or a practice or hospital name; a text match on practice addresses, not a distance search. Each result: doctor_id, name, gender, specialties (French, as registered), specialties_en, places (up to 3 practices, the ones matching place first), fee_sectors (Ameli category: Secteur 1 = standard fees; Secteur 2 = may charge extra; Non conventionné = not contracted, little reimbursed), optam (agreed to limit extra fees), match_basis (with a need: stated_expertise, official_competence, hospital_department_or_training, several_fields, specialty, specialty_usually_treats, partial), register (rpps, ameli_only = only in the Assurance Maladie directory, website_only = not matched to the official registers), warnings (e.g. barred from practising) and detail_has (what get_doctor adds). With a need, results are ranked by how directly the doctor's own data matches it: all its words in the expertise or procedures the doctor states, then in official competences or university diplomas, then in hospital department, role or training, then spread over several fields, then in the specialty name; then, when the need is a condition few doctors list, doctors in the specialty that usually treats it (specialty_usually_treats); then doctors matching only some of the words. Without a need, doctors with more data (stated expertise, official competences, profile pages) come first, then in a fixed shuffled order. Not ranked by quality, outcomes, fees or industry links. Then call get_doctor with the doctor_ids you are considering. Up to 10 results per search and paging stops at 30: narrow the need or the place instead of paging.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -18,9 +18,10 @@
             "type": "string",
             "enum": [
               "US",
-              "NZ"
+              "NZ",
+              "FR"
             ],
-            "description": "Where the person wants to be seen: United States (country=US), New Zealand (country=NZ). Decide it before searching; if unclear, ask the person. Older clients that leave it out get United States."
+            "description": "Where the person wants to be seen: United States (country=US), New Zealand (country=NZ), France (country=FR). Decide it before searching; if unclear, ask the person. Older clients that leave it out get United States."
           },
           "condition": {
             "type": "string",
@@ -35,7 +36,7 @@
           "specialty": {
             "type": "string",
             "maxLength": 200,
-            "description": "US: Specialty id, name, title or family, e.g. 'cardiology', 'cardiologist', 'ENT', 'GI', 'OB/GYN', 'primary care', 'pediatric neurology', 'palliative care', 'orthopaedic-surgery'. See list_specialties. NZ: Specialty name, a word from one, or a plain word like 'eye' (see list_specialties)."
+            "description": "US: Specialty id, name, title or family, e.g. 'cardiology', 'cardiologist', 'ENT', 'GI', 'OB/GYN', 'primary care', 'pediatric neurology', 'palliative care', 'orthopaedic-surgery'. See list_specialties. NZ: Specialty name, a word from one, or a plain word like 'eye' (see list_specialties). FR: Specialty in French or English, e.g. 'cardiologie', 'dermatology', 'ORL', 'GP' (see list_specialties)."
           },
           "state": {
             "type": "string",
@@ -73,7 +74,7 @@
           "language": {
             "type": "string",
             "maxLength": 200,
-            "description": "US: Language the doctor speaks other than English, e.g. 'Spanish', 'Mandarin', 'Vietnamese' (several: 'Spanish, Portuguese' = any of them). Keeps only doctors whose hospital website lists it (one site lists office staff's languages too); most doctors have no such page here, so if few results, also search the web. NZ: Language other than English the doctor, or a small clinic (3 doctors or fewer) they work in, lists, e.g. 'Mandarin', 'Hindi', 'Samoan'."
+            "description": "US: Language the doctor speaks other than English, e.g. 'Spanish', 'Mandarin', 'Vietnamese' (several: 'Spanish, Portuguese' = any of them). Keeps only doctors whose hospital website lists it (one site lists office staff's languages too); most doctors have no such page here, so if few results, also search the web. NZ: Language other than English the doctor, or a small clinic (3 doctors or fewer) they work in, lists, e.g. 'Mandarin', 'Hindi', 'Samoan'. FR: Language other than French, e.g. 'English', 'Arabic', 'anglais'. Only known for doctors with a Maiia or hospital profile (about 1,800 list one); many others speak it too."
           },
           "gender": {
             "type": "string",
@@ -81,7 +82,7 @@
               "female",
               "male"
             ],
-            "description": "female or male. US: Doctor's gender (NPI registry). NZ: Only when the person asks. Gender is recorded for only a small share of doctors (when their Healthpoint page states it); doctors without it are left out and gender_note says how many."
+            "description": "female or male. US: Doctor's gender (NPI registry). NZ: Only when the person asks. Gender is recorded for only a small share of doctors (when their Healthpoint page states it); doctors without it are left out and gender_note says how many. FR: Only when the person asks. From the register's civil title (Madame/Monsieur); recorded for almost all doctors."
           },
           "medicare_patient": {
             "type": "boolean",
@@ -95,7 +96,7 @@
           "name": {
             "type": "string",
             "maxLength": 200,
-            "description": "US: Part of the doctor's name. Name searches also return NPI records that are probably not physicians (nurse practitioners, physician assistants, etc.), marked with a WARNING; other searches leave them out. NZ: Doctor's name or part of it, to check a named doctor."
+            "description": "US: Part of the doctor's name. Name searches also return NPI records that are probably not physicians (nurse practitioners, physician assistants, etc.), marked with a WARNING; other searches leave them out. NZ: Doctor's name or part of it, to check a named doctor. FR: Doctor's name or part of it, to check a named doctor."
           },
           "sort": {
             "type": "string",
@@ -116,17 +117,17 @@
             "type": "integer",
             "minimum": 0,
             "maximum": 20,
-            "description": "US: For paging (at most 20, so 30 results in all: narrow the search instead of paging further). NZ: For paging (at most 20, so 30 results in all: narrow the search instead)."
+            "description": "US: For paging (at most 20, so 30 results in all: narrow the search instead of paging further). NZ: For paging (at most 20, so 30 results in all: narrow the search instead). FR: For paging (at most 20, so 30 results in all: narrow the search instead)."
           },
           "need": {
             "type": "string",
             "maxLength": 200,
-            "description": "(NZ only) Condition, procedure or focus, plain English."
+            "description": "NZ: Condition, procedure or focus, plain English. FR: Condition, procedure or focus, in French or English."
           },
           "place": {
             "type": "string",
             "maxLength": 200,
-            "description": "(NZ only) New Zealand city, suburb, or region or Health NZ district (e.g. 'Waikato', 'Hawke's Bay', 'Capital and Coast')."
+            "description": "NZ: New Zealand city, suburb, or region or Health NZ district (e.g. 'Waikato', 'Hawke's Bay', 'Capital and Coast'). FR: City, postcode, arrondissement ('Paris 15'), département number ('69', '2A') or a practice or hospital name."
           },
           "sector": {
             "type": "string",
@@ -148,6 +149,29 @@
           "experienced_first": {
             "type": "boolean",
             "description": "(NZ only) True when the person wants an experienced or senior doctor: among doctors who match equally well, those longer on the New Zealand specialist (vocational) register come first. Time on the register is not quality, and doctors who trained overseas may have practised longer than it shows."
+          },
+          "fee_sector": {
+            "type": "string",
+            "enum": [
+              "any",
+              "secteur_1",
+              "secteur_1_or_optam",
+              "secteur_2"
+            ],
+            "description": "(FR only) Assurance Maladie fee category. secteur_1 = standard fees, no extra charges; secteur_1_or_optam = standard fees or agreed limits on extra fees; secteur_2 = may charge extra. Kept if ANY of the doctor's practices has it (it can differ by practice): check each practice in get_doctor. Most hospital-only doctors have no category. Default any."
+          },
+          "online_booking": {
+            "type": "boolean",
+            "description": "(FR only) True keeps doctors whose Maiia or hospital page shows online booking (Doctolib is not covered)."
+          },
+          "teleconsultation": {
+            "type": "boolean",
+            "description": "(FR only) True keeps doctors offering video consultations on Maiia."
+          },
+          "hospital_finess": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "(FR only) Keep doctors whose register address is this hospital site (FINESS number from hospital_procedure_volumes): mostly salaried hospital doctors."
           }
         },
         "additionalProperties": false,
@@ -166,15 +190,15 @@
     },
     {
       "name": "get_doctor",
-      "description": "Evidence for doctors from search_doctors, by doctor_id. The id says the country (dr_ = United States, nz_ = New Zealand), so no country parameter is needed; open one country's doctors per call. Parameters marked (US only) or (NZ only) work for that country only.\n\nUnited States (dr_ ids): Evidence for doctors from search_doctors: pass doctor_ids (up to 10 at once), or one doctor_id, or an npi. Each different doctor you open counts toward a daily limit for your connection (replies show daily_doctor_limit when it matters); opening a doctor again the same day is free. Open the doctors you are seriously considering, not every result. One reply holds about 2-3 doctors (1 with detail='full'); the others come back under not_returned_yet, already counted, so call again with those doctor_ids at no extra cost. Full evidence for one doctor; use it to compare or check doctors the person names (by npi) and before recommending. Every doctor: registered specialty, practice locations with phones (phone_source), medical school, hospitals, medical group, Medicare 2024 patients and patient mix, procedure volumes with national ranks, Medicare opt-out and federal exclusion-list checks, and from official files prescribing_2024 (Medicare Part D 2024 summary and top medicines), industry_payments (2024-2025), industry_research_as_principal_investigator and mips_2024 (detail='full' returns them as one official_extras record). Any doctor whose Part D 2024 claims lean clearly toward one condition's medicines has prescribing_signals_2024 (more such patients, not quality). Doctors whose hospital system's own website was read have hospital_websites (per site: focus as standard MeSH terms, languages, education, board certifications, new-patient status, office phones and addresses, page address and date read; at some hospital systems also insurance_listed, the page's insurance list grouped by insurer, a lead to confirm). detail='full' returns every collected field.\n\nNew Zealand (nz_ ids): Evidence for New Zealand doctors from search_doctors: pass doctor_ids (up to 10 at once) or one doctor_id. Each different doctor you open counts toward a daily limit for your connection (replies show daily_doctor_limit when it matters); opening a doctor again the same day is free. Open the doctors you are seriously considering, not every result. Each doctor: specialties, title, qualifications, focus areas and subspecialties they list, further training, languages, whether their services see children; every private and public service with clinic addresses, phone numbers and websites, procedures and conditions the service lists, fee categories and fee lines, ages, hours, how to get referred, and whether it says Southern Cross Affiliated Provider or nib First Choice (insurer_notes also says whether the doctor's own page says so); the Medical Council register entry (status, scope of practice, conditions, qualifications, practising certificate); experience (each vocational scope with the date it was granted and years since, first New Zealand registration, primary medical degree year, New Zealand honours with citation, University of Auckland title and hospital appointments, approximate count of papers with a New Zealand affiliation and a link to the list); hospital website links; and source links with read dates. For a GP, services include the practice's enrolment status and fee table. Profiles are not reproduced: give the person the Healthpoint link (sources.healthpoint) for the doctor's own words.",
+      "description": "Evidence for doctors from search_doctors, by doctor_id. The id says the country (dr_ = United States, nz_ = New Zealand, fr_ = France), so no country parameter is needed; open one country's doctors per call. Parameters marked (US only), (NZ only) or (FR only) work for that country only.\n\nUnited States (dr_ ids): Evidence for doctors from search_doctors: pass doctor_ids (up to 10 at once), or one doctor_id, or an npi. Each different doctor you open counts toward a daily limit for your connection (replies show daily_doctor_limit when it matters); opening a doctor again the same day is free. Open the doctors you are seriously considering, not every result. One reply holds about 2-3 doctors (1 with detail='full'); the others come back under not_returned_yet, already counted, so call again with those doctor_ids at no extra cost. Full evidence for one doctor; use it to compare or check doctors the person names (by npi) and before recommending. Every doctor: registered specialty, practice locations with phones (phone_source), medical school, hospitals, medical group, Medicare 2024 patients and patient mix, procedure volumes with national ranks, Medicare opt-out and federal exclusion-list checks, and from official files prescribing_2024 (Medicare Part D 2024 summary and top medicines), industry_payments (2024-2025), industry_research_as_principal_investigator and mips_2024 (detail='full' returns them as one official_extras record). Any doctor whose Part D 2024 claims lean clearly toward one condition's medicines has prescribing_signals_2024 (more such patients, not quality). Doctors whose hospital system's own website was read have hospital_websites (per site: focus as standard MeSH terms, languages, education, board certifications, new-patient status, office phones and addresses, page address and date read; at some hospital systems also insurance_listed, the page's insurance list grouped by insurer, a lead to confirm). detail='full' returns every collected field.\n\nNew Zealand (nz_ ids): Evidence for New Zealand doctors from search_doctors: pass doctor_ids (up to 10 at once) or one doctor_id. Each different doctor you open counts toward a daily limit for your connection (replies show daily_doctor_limit when it matters); opening a doctor again the same day is free. Open the doctors you are seriously considering, not every result. Each doctor: specialties, title, qualifications, focus areas and subspecialties they list, further training, languages, whether their services see children; every private and public service with clinic addresses, phone numbers and websites, procedures and conditions the service lists, fee categories and fee lines, ages, hours, how to get referred, and whether it says Southern Cross Affiliated Provider or nib First Choice (insurer_notes also says whether the doctor's own page says so); the Medical Council register entry (status, scope of practice, conditions, qualifications, practising certificate); experience (each vocational scope with the date it was granted and years since, first New Zealand registration, primary medical degree year, New Zealand honours with citation, University of Auckland title and hospital appointments, approximate count of papers with a New Zealand affiliation and a link to the list); hospital website links; and source links with read dates. For a GP, services include the practice's enrolment status and fee table. Profiles are not reproduced: give the person the Healthpoint link (sources.healthpoint) for the doctor's own words.\n\nFrance (fr_ ids): Evidence for doctors in France from search_doctors: pass doctor_ids (up to 10 at once) or one doctor_id. Each different doctor you open counts toward a daily limit for your connection (replies show daily_doctor_limit when it matters); opening a doctor again the same day is free. Open the doctors you are seriously considering, not every result. Each doctor: RPPS number (check on annuaire.sante.fr), official specialties, official extra competences and university diplomas (DU/DIU), practice modes; every practice from the RPPS register and the Ameli directory with address, phone, setting, role, fee category (Secteur 1/2, OPTAM) and hospital FINESS number; from Maiia or hospital pages when the doctor has one: stated expertise, procedures offered, hospital department and role, qualifications, languages, consultation fees, online booking, video consultations, whether online booking is open to new patients; source pages with read dates; and industry_links: Transparence Santé declarations by drug and device companies (agreements, benefits, payments) by year, company and purpose, shown as declared (licence CC BY-NC-SA 4.0; not evidence of expertise or wrongdoing). Profile text is not reproduced: give the person the source page link for the doctor's own words.",
       "inputSchema": {
         "type": "object",
         "properties": {
           "doctor_id": {
             "type": "string",
             "maxLength": 20,
-            "pattern": "^(?:dr_[0-9a-z]{12}|nz_[0-9a-z]{12})$",
-            "description": "One doctor_id from search_doctors (dr_... = United States, nz_... = New Zealand)."
+            "pattern": "^(?:dr_[0-9a-z]{12}|nz_[0-9a-z]{12}|fr_[0-9a-z]{12})$",
+            "description": "One doctor_id from search_doctors (dr_... = United States, nz_... = New Zealand, fr_... = France)."
           },
           "npi": {
             "type": "string",
@@ -196,9 +220,9 @@
             "items": {
               "type": "string",
               "maxLength": 20,
-              "pattern": "^(?:dr_[0-9a-z]{12}|nz_[0-9a-z]{12})$"
+              "pattern": "^(?:dr_[0-9a-z]{12}|nz_[0-9a-z]{12}|fr_[0-9a-z]{12})$"
             },
-            "description": "Up to 10 doctor_ids from search_doctors, all from one country (dr_... = United States, nz_... = New Zealand)."
+            "description": "Up to 10 doctor_ids from search_doctors, all from one country (dr_... = United States, nz_... = New Zealand, fr_... = France)."
           }
         },
         "additionalProperties": false
@@ -256,7 +280,7 @@
     },
     {
       "name": "list_specialties",
-      "description": "Specialty names one country's database uses. Set country: United States (country=US), New Zealand (country=NZ).\n\nUnited States (country=US): All specialties in the database with ids, families and physician counts.\n\nNew Zealand (country=NZ): Specialty names used in this database (Healthpoint categories) with doctor counts. Free.",
+      "description": "Specialty names one country's database uses. Set country: United States (country=US), New Zealand (country=NZ), France (country=FR).\n\nUnited States (country=US): All specialties in the database with ids, families and physician counts.\n\nNew Zealand (country=NZ): Specialty names used in this database (Healthpoint categories) with doctor counts. Free.\n\nFrance (country=FR): Specialty names in this database (official French names from RPPS and Ameli, and English labels) with doctor counts. Free.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -264,9 +288,10 @@
             "type": "string",
             "enum": [
               "US",
-              "NZ"
+              "NZ",
+              "FR"
             ],
-            "description": "Where the person wants to be seen: United States (country=US), New Zealand (country=NZ). Decide it before searching; if unclear, ask the person. Older clients that leave it out get United States."
+            "description": "Where the person wants to be seen: United States (country=US), New Zealand (country=NZ), France (country=FR). Decide it before searching; if unclear, ask the person. Older clients that leave it out get United States."
           }
         },
         "additionalProperties": false,
@@ -285,7 +310,7 @@
     },
     {
       "name": "about_database",
-      "description": "What one country's database holds: sources, dates, counts and coverage. Set country: United States (country=US), New Zealand (country=NZ).\n\nUnited States (country=US): Sources, build date, coverage counts, scoring method and caveats.\n\nNew Zealand (country=NZ): Sources, read dates, coverage counts and known gaps. Free.",
+      "description": "What one country's database holds: sources, dates, counts and coverage. Set country: United States (country=US), New Zealand (country=NZ), France (country=FR).\n\nUnited States (country=US): Sources, build date, coverage counts, scoring method and caveats.\n\nNew Zealand (country=NZ): Sources, read dates, coverage counts and known gaps. Free.\n\nFrance (country=FR): Sources, licences, read dates, coverage counts and known gaps. Free.",
       "inputSchema": {
         "type": "object",
         "properties": {
@@ -293,9 +318,10 @@
             "type": "string",
             "enum": [
               "US",
-              "NZ"
+              "NZ",
+              "FR"
             ],
-            "description": "Where the person wants to be seen: United States (country=US), New Zealand (country=NZ). Decide it before searching; if unclear, ask the person. Older clients that leave it out get United States."
+            "description": "Where the person wants to be seen: United States (country=US), New Zealand (country=NZ), France (country=FR). Decide it before searching; if unclear, ask the person. Older clients that leave it out get United States."
           }
         },
         "additionalProperties": false,
@@ -403,6 +429,64 @@
       },
       "annotations": {
         "title": "Health NZ public waiting lists",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "hospital_procedure_volumes",
+      "title": "Hospital procedure volumes in France",
+      "description": "France only. Which French hospitals and private clinics perform a procedure most, from Open CCAM (ATIH): number of acts per hospital site per year, 2021-2025, public and private. Counts hospital stays and day cases only (PMSI MCO); procedures done in a doctor's office or a hospital outpatient clinic are not counted, and a site with fewer than 11 stays for an act is not listed. procedure = English or French text ('cataract', 'knee replacement', 'prothèse genou', 'coloscopie', 'ablation fibrillation auriculaire') or CCAM codes; the reply lists the CCAM acts it added up, so check they fit the need (add-on codes and pathology are left out of text matches). For 'aneurysm' or 'stent' say where (brain, aorta, heart, carotid). place = city, postcode, Paris/Lyon/Marseille arrondissement, département number or a hospital FINESS number; without place it ranks all of France. Hospital-level only: it does not say which surgeon operates. Then use search_doctors with hospital_finess (salaried hospital doctors) or with the hospital's postcode and the specialty (self-employed surgeons at private clinics). Free.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "procedure": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Procedure in English or French, or CCAM codes (e.g. 'BFGA427'; an 8th phase digit is dropped)."
+          },
+          "codes": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 15,
+            "items": {
+              "type": "string",
+              "maxLength": 8,
+              "pattern": "^[A-Za-z]{4}[0-9]{3,4}$",
+              "description": "a CCAM code: 4 letters + 3 digits, e.g. 'BFGA427'"
+            },
+            "description": "Exact CCAM codes to add up (use instead of procedure to narrow)."
+          },
+          "place": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "City, postcode, arrondissement ('Paris 15'), département number (2A, 2B, 971-976), or hospital FINESS number."
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 2021,
+            "maximum": 2025,
+            "description": "Default latest (2025)."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Default 10."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "For paging (at most 100)."
+          }
+        }
+      },
+      "annotations": {
+        "title": "Hospital procedure volumes in France",
         "readOnlyHint": true,
         "destructiveHint": false,
         "idempotentHint": true,

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "si.findadoctor.api-fr/fr-doctor-finder",
+  "title": "FindADoctor.si France",
+  "description": "Find doctors in France by condition, procedure or place, with fee category and sources. No sign-up.",
+  "version": "fr-2026-10-16.1",
+  "websiteUrl": "https://findadoctor.si/fr/",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api-fr.findadoctor.si/mcp"
+    }
+  ]
+}

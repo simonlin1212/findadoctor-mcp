@@ -6,12 +6,13 @@
 
 <p align="center">
   <b>Find doctors for a condition, procedure or place, with sourced evidence for each doctor.</b><br>
-  One remote MCP server for every country (the United States and New Zealand), plus an HTTP API per country, built for AI agents. No sign-up, no API key.
+  One remote MCP server for every country (the United States, New Zealand and France), plus an HTTP API per country, built for AI agents. No sign-up, no API key.
 </p>
 
 <p align="center">
   <a href="https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api%2Fus-doctor-finder/versions/latest"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fregistry.modelcontextprotocol.io%2Fv0.1%2Fservers%2Fsi.findadoctor.api%252Fus-doctor-finder%2Fversions%2Flatest&query=%24.server.version&label=MCP%20Registry&logo=modelcontextprotocol&color=0B6B5C" alt="MCP Registry: si.findadoctor.api/us-doctor-finder"></a>
   <a href="https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api-nz%2Fnz-doctor-finder/versions/latest"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fregistry.modelcontextprotocol.io%2Fv0.1%2Fservers%2Fsi.findadoctor.api-nz%252Fnz-doctor-finder%2Fversions%2Flatest&query=%24.server.version&label=MCP%20Registry%20NZ&logo=modelcontextprotocol&color=0B6B5C" alt="MCP Registry: si.findadoctor.api-nz/nz-doctor-finder"></a>
+  <a href="https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api-fr%2Ffr-doctor-finder/versions/latest"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fregistry.modelcontextprotocol.io%2Fv0.1%2Fservers%2Fsi.findadoctor.api-fr%252Ffr-doctor-finder%2Fversions%2Flatest&query=%24.server.version&label=MCP%20Registry%20FR&logo=modelcontextprotocol&color=0B6B5C" alt="MCP Registry: si.findadoctor.api-fr/fr-doctor-finder"></a>
   <img src="https://img.shields.io/badge/transport-Streamable_HTTP-0B6B5C" alt="Transport: Streamable HTTP">
   <img src="https://img.shields.io/badge/sign--up-not_needed-0B6B5C" alt="Sign-up: not needed">
   <a href="https://findadoctor.si"><img src="https://img.shields.io/badge/website-findadoctor.si-0B6B5C" alt="Website: findadoctor.si"></a>
@@ -36,7 +37,7 @@
 </p>
 
 > [!IMPORTANT]
-> Not medical advice. In an emergency, call 911 in the United States or 111 in New Zealand.
+> Not medical advice. In an emergency, call 911 in the United States, 111 in New Zealand, or 15 (SAMU) or 112 in France.
 
 ## Quick start
 
@@ -50,7 +51,7 @@ Paste it into any MCP client that supports remote servers. There is no sign-in a
 
 ```text
 Connect the FindADoctor.si MCP server to this client: https://api.findadoctor.si/mcp
-(Streamable HTTP, no authentication; one address for the United States and New Zealand).
+(Streamable HTTP, no authentication; one address for the United States, New Zealand and France).
 Read https://findadoctor.si/llms.txt first. If this client supports Agent Skills, also
 install the findadoctor skill from
 https://github.com/simonlin1212/findadoctor-mcp/tree/main/skills/findadoctor
@@ -60,12 +61,12 @@ https://github.com/simonlin1212/findadoctor-mcp/tree/main/skills/findadoctor
 
 - The agent decides the country first: where the person wants to see a doctor, from the place they mention or what it knows about where they live.
 - If nothing settles it (no place given, or a place name used in more than one country, such as Hamilton, with no other clue), it asks the person before searching. It does not guess, and it does not search every country.
-- Then it passes `country` (`US` or `NZ`) to `search_doctors`, `list_specialties` and `about_database`. Doctor ids carry their country (`dr_` = United States, `nz_` = New Zealand), so `get_doctor` needs no `country`.
+- Then it passes `country` (`US`, `NZ` or `FR`) to `search_doctors`, `list_specialties` and `about_database`. Doctor ids carry their country (`dr_` = United States, `nz_` = New Zealand, `fr_` = France), so `get_doctor` needs no `country`.
 - `country` is for MCP only. The HTTP APIs are per country, each on its own host, and take no `country`.
-- Searches without `country` use the United States, so clients that connected before New Zealand was added work as before.
-- Each country keeps its own daily allowance. New Zealand also has a New Zealand-only address ([details below](#new-zealand)).
+- Searches without `country` use the United States, so clients that connected before other countries were added work as before.
+- Each country keeps its own daily allowance. New Zealand and France also have one-country addresses (details below: [New Zealand](#new-zealand), [France](#france)).
 
-Most of this page is about the United States; [New Zealand](#new-zealand) has its own section with its own tools.
+Most of this page is about the United States; [New Zealand](#new-zealand) and [France](#france) have their own sections with their own tools.
 
 ## ❌ Without / ✅ With FindADoctor.si
 
@@ -161,7 +162,7 @@ Two steps:
 | `list_specialties` | `GET /api/v1/specialties` | Specialty names and ids. |
 | `about_database` | `GET /api/v1/about` | Sources, build date, coverage, scoring and caveats. |
 
-Every parameter: [docs/tools.md](docs/tools.md) and [`reference/tools.json`](reference/tools.json) (all tools at the one address, both countries). Every field of the US HTTP API: [`openapi.json`](https://api.findadoctor.si/openapi.json).
+Every parameter: [docs/tools.md](docs/tools.md) and [`reference/tools.json`](reference/tools.json) (all tools at the one address, every country). Every field of the US HTTP API: [`openapi.json`](https://api.findadoctor.si/openapi.json).
 
 ### Example
 
@@ -213,7 +214,7 @@ As of 2026-10-13, during the public test. The current values are always on the [
 - Searching does not count toward the doctor allowance. Opening the same doctor again the same UTC day is free.
 - Connections from the Claude and ChatGPT apps, recognized by the network addresses Anthropic and OpenAI publish, have their own allowances (ChatGPT: 100 per user; Claude: one shared allowance for all its users). See [`/llms.txt`](https://api.findadoctor.si/llms.txt).
 - When the allowance runs out, the reply says so and when it resets (00:00 UTC). An agent should tell the person, not retry in a loop.
-- Need more? Email contact@findadoctor.si with what your agent does to ask for an account key (sent as `Authorization: Bearer`). Keys are issued for the United States; through the one address, New Zealand searches use the allowance without an account.
+- Need more? Email contact@findadoctor.si with what your agent does to ask for an account key (sent as `Authorization: Bearer`). Keys are issued for the United States; through the one address, New Zealand and France use the allowance without an account.
 
 ## Data (United States)
 
@@ -285,7 +286,63 @@ Sources: Healthpoint, the Medical Council of New Zealand register, Health New Ze
 
 What it does **not** have: insurer cover (confirm with the insurer, often prior approval), appointment availability or private wait times, procedure volumes or outcomes for individual doctors, and clinic details for doctors who are only on the register (many public-hospital doctors and psychiatrists). Results are ordered by how directly the doctor's own listing matches the need. No ratings, reviews or rankings are used.
 
-Limits: 5 different doctors opened with `get_doctor` per network address per day without an account, 30 requests a minute and 300 a day. Searches and GP practice lists don't count toward the doctor allowance. The two countries count separately, also through the one address. Current values: [Limits](https://findadoctor.si/nz/docs/limits/).
+Limits: 5 different doctors opened with `get_doctor` per network address per day without an account, 30 requests a minute and 300 a day. Searches and GP practice lists don't count toward the doctor allowance. Each country counts separately, also through the one address. Current values: [Limits](https://findadoctor.si/nz/docs/limits/).
+
+## France
+
+Through the one address, `https://api.findadoctor.si/mcp`, search with `country: "FR"`. `get_doctor` reads the country from the `fr_` id, and `hospital_procedure_volumes` is France only. No sign-up and the same two steps: a free short list, then evidence for the doctors you are considering. Searches work in French or English.
+
+There is also a France-only address, which needs no `country`:
+
+```text
+https://api-fr.findadoctor.si/mcp
+```
+
+Use it if you want France alone, for example:
+
+```bash
+claude mcp add --transport http findadoctor-fr https://api-fr.findadoctor.si/mcp
+codex mcp add findadoctor-fr --url https://api-fr.findadoctor.si/mcp
+gemini mcp add --transport http findadoctor-fr https://api-fr.findadoctor.si/mcp
+```
+
+As with New Zealand, you don't need both addresses: the one address already covers France.
+
+| MCP tool | HTTP API | What it does |
+|---|---|---|
+| `search_doctors` | `GET /api/v1/search` | Free short list for a need (condition, procedure, specialty, place or name), with how directly each doctor's own data matches. |
+| `get_doctor` | `GET /api/v1/doctors?ids=…` | Evidence for up to 10 doctors: RPPS register entry, every practice with address, phone and Assurance Maladie fee category, official competences and university diplomas, stated expertise and languages when known, and industry declarations. Counted per day. |
+| `hospital_procedure_volumes` | `GET /api/v1/procedure-volumes` | Free: which hospitals and clinics near a place perform a procedure most (Open CCAM, 2021–2025). Counts are per hospital, not per surgeon. |
+| `list_specialties` | `GET /api/v1/specialties` | Specialty names with doctor counts. |
+| `about_database` | `GET /api/v1/about` | Sources, read dates, coverage, licences and known gaps. |
+
+The HTTP API is at `https://api-fr.findadoctor.si`. Every parameter: [docs/tools.md](docs/tools.md) (the one address, where these tools take `country: "FR"`), [docs/tools-fr.md](docs/tools-fr.md) and [`reference/tools-fr.json`](reference/tools-fr.json) (the France-only address), and [`openapi.json`](https://api-fr.findadoctor.si/openapi.json). Docs: [findadoctor.si/fr/docs/](https://findadoctor.si/fr/docs/).
+
+### Try asking
+
+```text
+J'habite à Bordeaux et je dois me faire opérer de la cataracte. Quels ophtalmologues près
+de chez moi, et quelles cliniques en font le plus ?
+```
+
+```text
+I live in Nantes. Which rheumatologists nearby are in Secteur 1 (standard fees)?
+```
+
+### What it has
+
+- Every doctor in the RPPS register (about 267,000), plus about 8,100 found only in the Assurance Maladie directory, with specialty and practice addresses. 74% have a practice phone.
+- The Assurance Maladie fee category (Secteur 1, Secteur 2 or OPTAM) for about 124,000 doctors, mostly in private practice.
+- Official extra competences or university diplomas (DU/DIU) for about 49,000 doctors.
+- About 10,000 doctors with a Maiia page or a page on one of six hospital websites; about 5,800 of them state their expertise or the procedures they offer.
+- Open CCAM procedure volumes for about 1,600 hospital sites, 2021–2025.
+- Industry declarations (Transparence Santé) matched to about 147,000 doctors. They appear only in a doctor's evidence, as declared, and are never used to rank or filter.
+
+Sources: Annuaire Santé (RPPS register, Agence du Numérique en Santé, Licence Ouverte 2.0), the Assurance Maladie directory, Maiia and six hospital websites, Open CCAM (ATIH) and Transparence Santé (CC BY-NC-SA 4.0: no commercial use). Every fact comes with its source and read date. Details: [Data and sources](https://findadoctor.si/fr/docs/data/).
+
+What it does **not** have: stated expertise for most doctors (few specialists state it in the sources we can read, and Doctolib and AP-HP pages are not included, so the agent should also search the web), appointment availability or waiting times, procedure volumes or outcomes for individual doctors, top-up insurance (mutuelle) cover, and patient reviews. Results are ordered by how directly the doctor's own data matches the need. No ratings, reviews or rankings are used, and industry links never change the order.
+
+Limits: 5 different doctors opened with `get_doctor` per network address per day without an account, 30 requests a minute and 300 a day. Searches and hospital volumes don't count toward the doctor allowance. Current values: [Limits](https://findadoctor.si/fr/docs/limits/).
 
 ## Agent Skill
 
@@ -293,17 +350,18 @@ Limits: 5 different doctors opened with `get_doctor` per network address per day
 
 ## What's in this repository
 
-This is the official guide for connecting to the service, for both countries. The server code and the database are not open source and are not in this repository.
+This is the official guide for connecting to the service, for every country. The server code and the database are not open source and are not in this repository.
 
 | Path | What it is |
 |---|---|
 | [`docs/connect.md`](docs/connect.md) | Setup for each client |
-| [`docs/tools.md`](docs/tools.md), [`reference/tools.json`](reference/tools.json) | Tool reference for the one address (both countries), generated from the live server |
+| [`docs/tools.md`](docs/tools.md), [`reference/tools.json`](reference/tools.json) | Tool reference for the one address (every country), generated from the live server |
 | [`docs/tools-nz.md`](docs/tools-nz.md), [`reference/tools-nz.json`](reference/tools-nz.json) | Tool reference for the New Zealand-only address, generated from the live server |
+| [`docs/tools-fr.md`](docs/tools-fr.md), [`reference/tools-fr.json`](reference/tools-fr.json) | Tool reference for the France-only address, generated from the live server |
 | [`examples/`](examples) | Sample replies and runnable examples (curl, Python, TypeScript) |
 | [`skills/findadoctor/`](skills/findadoctor/SKILL.md) | The Agent Skill |
 | [`.claude-plugin/`](.claude-plugin), [`plugin.json`](plugin.json), [`mcp.json`](mcp.json), [`.agents/plugins/`](.agents/plugins), [`gemini-extension.json`](gemini-extension.json) | Plugin manifests for Claude Code, Codex and other Agent Plugins clients, and Gemini CLI |
-| [`server.json`](server.json), [`server-nz.json`](server-nz.json) | Copies of the MCP Registry entries [`si.findadoctor.api/us-doctor-finder`](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api%2Fus-doctor-finder/versions/latest) and [`si.findadoctor.api-nz/nz-doctor-finder`](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api-nz%2Fnz-doctor-finder/versions/latest) |
+| [`server.json`](server.json), [`server-nz.json`](server-nz.json), [`server-fr.json`](server-fr.json) | Copies of the MCP Registry entries [`si.findadoctor.api/us-doctor-finder`](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api%2Fus-doctor-finder/versions/latest), [`si.findadoctor.api-nz/nz-doctor-finder`](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api-nz%2Fnz-doctor-finder/versions/latest) and [`si.findadoctor.api-fr/fr-doctor-finder`](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api-fr%2Ffr-doctor-finder/versions/latest) |
 
 ## Privacy
 
@@ -311,7 +369,7 @@ Search terms are used only to answer the request. They are not logged or stored,
 
 ## Corrections, support and security
 
-- **Doctors:** if something about you is wrong, see Corrections and removal for the [United States](https://findadoctor.si/us/corrections/) or [New Zealand](https://findadoctor.si/nz/corrections/). Please don't use GitHub issues for personal details.
+- **Doctors:** if something about you is wrong, see Corrections and removal for the [United States](https://findadoctor.si/us/corrections/), [New Zealand](https://findadoctor.si/nz/corrections/) or [France](https://findadoctor.si/fr/corrections/). Please don't use GitHub issues for personal details.
 - **Bugs in replies, docs or examples:** [open an issue](https://github.com/simonlin1212/findadoctor-mcp/issues/new/choose). Leave out anything about a patient.
 - **Security:** see [SECURITY.md](SECURITY.md).
 - **Email:** contact@findadoctor.si

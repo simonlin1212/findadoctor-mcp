@@ -1,6 +1,6 @@
 # Tool reference: New Zealand
 
-Generated from the live New Zealand server's `tools/list` on 2026-10-15 (server version nz-2026-10-15.2). The live server is the source of truth: [`reference/tools-nz.json`](../reference/tools-nz.json) is the same list as JSON, and [`openapi.json`](https://api-nz.findadoctor.si/openapi.json) describes the HTTP API and the reply fields. The one MCP address for every country, `https://api.findadoctor.si/mcp`, has the same tools (with `country: "NZ"`): see [tools.md](tools.md).
+Generated from the live New Zealand server's `tools/list` on 2026-10-16 (server version nz-2026-10-15.2). The live server is the source of truth: [`reference/tools-nz.json`](../reference/tools-nz.json) is the same list as JSON, and [`openapi.json`](https://api-nz.findadoctor.si/openapi.json) describes the HTTP API and the reply fields. The one MCP address for every country, `https://api.findadoctor.si/mcp`, has the same tools (with `country: "NZ"`): see [tools.md](tools.md).
 
 MCP endpoint: `https://api-nz.findadoctor.si/mcp`. All tools are read-only. Every MCP tool has an HTTP `GET` equivalent on `https://api-nz.findadoctor.si` that takes the same parameters (for `get_doctor`, `doctor_ids` is `ids`, comma-separated) and returns the same JSON.
 

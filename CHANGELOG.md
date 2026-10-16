@@ -2,6 +2,13 @@
 
 Changes to this repository. Changes to the service itself are listed at https://findadoctor.si/us/changelog/.
 
+## 2026-10-16
+
+- France: the one MCP address, `https://api.findadoctor.si/mcp`, now also serves France (`country: "FR"`, doctor ids `fr_`, and the France-only tool `hospital_procedure_volumes`). There is also a France-only MCP server, `https://api-fr.findadoctor.si/mcp` (MCP Registry `si.findadoctor.api-fr/fr-doctor-finder`), and an HTTP API at `https://api-fr.findadoctor.si/api/v1/…`.
+- README section, connection guide, Agent Skill, a tool reference generated from the live France server (`docs/tools-fr.md`, `reference/tools-fr.json`, service version fr-2026-10-16.1) and a copy of its registry entry (`server-fr.json`).
+- `docs/tools.md` and `reference/tools.json` regenerated for the one address (9 tools, service version gw-2026-10-16.1). Registry entry `si.findadoctor.api/us-doctor-finder` version 2026-10-16.1 (`server.json`): the description now covers all three countries.
+- Plugin version 2026.10.16.1 (the plugins still add only the `findadoctor` server, which covers every country).
+
 ## 2026-10-15
 
 - One MCP address for every country: `https://api.findadoctor.si/mcp` now serves the United States and New Zealand. `search_doctors`, `list_specialties` and `about_database` take `country` (`US` or `NZ`; left out, it is the United States, for clients that connected earlier); `get_doctor` reads the country from the doctor id (`dr_` or `nz_`). README, connection guide and the Agent Skill now say to decide the country first and to ask the person when nothing settles it. `country` is for MCP only; the HTTP APIs stay per country.

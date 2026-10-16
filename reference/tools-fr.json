@@ -1,0 +1,225 @@
+{
+  "_note": "Snapshot of the live tools/list from https://api-fr.findadoctor.si/mcp. The live server is the source of truth. Doctor ids in the descriptions are placeholders written by the server, not real doctors.",
+  "server": {
+    "name": "findadoctor-si-fr",
+    "title": "FindADoctor.si France",
+    "version": "fr-2026-10-16.1"
+  },
+  "protocolVersion": "2025-11-25",
+  "fetched": "2026-10-16",
+  "tools": [
+    {
+      "name": "search_doctors",
+      "title": "Search doctors in France",
+      "description": "Free short list of doctors in France for a need; use it first whenever the person needs a doctor, specialist or GP in France. Give at least one of need, specialty, place, name or hospital_finess. need = condition, procedure or focus, in French or English (e.g. 'endométriose', 'prothèse genou', 'knee replacement', 'cataract'; common English words are also searched in French); matched against the expertise and procedures doctors state, their official competences and university diplomas, hospital departments and roles, and specialty. specialty = French or English (e.g. 'cardiologie', 'dermatology', 'pédiatre', 'ORL', 'GP', 'généraliste'). place = city ('Lyon', 'Paris' includes all arrondissements), postcode ('75015'), arrondissement ('Paris 15', 'Lyon 3e'), département number ('69', '2A') or a practice or hospital name; a text match on practice addresses, not a distance search. Each result: doctor_id, name, gender, specialties (French, as registered), specialties_en, places (up to 3 practices, the ones matching place first), fee_sectors (Ameli category: Secteur 1 = standard fees; Secteur 2 = may charge extra; Non conventionné = not contracted, little reimbursed), optam (agreed to limit extra fees), match_basis (with a need: stated_expertise, official_competence, hospital_department_or_training, several_fields, specialty, specialty_usually_treats, partial), register (rpps, ameli_only = only in the Assurance Maladie directory, website_only = not matched to the official registers), warnings (e.g. barred from practising) and detail_has (what get_doctor adds). With a need, results are ranked by how directly the doctor's own data matches it: all its words in the expertise or procedures the doctor states, then in official competences or university diplomas, then in hospital department, role or training, then spread over several fields, then in the specialty name; then, when the need is a condition few doctors list, doctors in the specialty that usually treats it (specialty_usually_treats); then doctors matching only some of the words. Without a need, doctors with more data (stated expertise, official competences, profile pages) come first, then in a fixed shuffled order. Not ranked by quality, outcomes, fees or industry links. Then call get_doctor with the doctor_ids you are considering. Up to 10 results per search and paging stops at 30: narrow the need or the place instead of paging.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "need": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Condition, procedure or focus, in French or English."
+          },
+          "specialty": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Specialty in French or English, e.g. 'cardiologie', 'dermatology', 'ORL', 'GP' (see list_specialties)."
+          },
+          "place": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "City, postcode, arrondissement ('Paris 15'), département number ('69', '2A') or a practice or hospital name."
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Doctor's name or part of it, to check a named doctor."
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "female",
+              "male"
+            ],
+            "description": "Only when the person asks. From the register's civil title (Madame/Monsieur); recorded for almost all doctors."
+          },
+          "language": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Language other than French, e.g. 'English', 'Arabic', 'anglais'. Only known for doctors with a Maiia or hospital profile (about 1,800 list one); many others speak it too."
+          },
+          "fee_sector": {
+            "type": "string",
+            "enum": [
+              "any",
+              "secteur_1",
+              "secteur_1_or_optam",
+              "secteur_2"
+            ],
+            "description": "Assurance Maladie fee category. secteur_1 = standard fees, no extra charges; secteur_1_or_optam = standard fees or agreed limits on extra fees; secteur_2 = may charge extra. Kept if ANY of the doctor's practices has it (it can differ by practice): check each practice in get_doctor. Most hospital-only doctors have no category. Default any."
+          },
+          "online_booking": {
+            "type": "boolean",
+            "description": "True keeps doctors whose Maiia or hospital page shows online booking (Doctolib is not covered)."
+          },
+          "teleconsultation": {
+            "type": "boolean",
+            "description": "True keeps doctors offering video consultations on Maiia."
+          },
+          "hospital_finess": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Keep doctors whose register address is this hospital site (FINESS number from hospital_procedure_volumes): mostly salaried hospital doctors."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "description": "Default 10."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 20,
+            "description": "For paging (at most 20, so 30 results in all: narrow the search instead)."
+          }
+        }
+      },
+      "annotations": {
+        "title": "Search doctors in France",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get_doctor",
+      "title": "Open doctors in France",
+      "description": "Evidence for doctors in France from search_doctors: pass doctor_ids (up to 10 at once) or one doctor_id. Each different doctor you open counts toward a daily limit for your connection (replies show daily_doctor_limit when it matters); opening a doctor again the same day is free. Open the doctors you are seriously considering, not every result. Each doctor: RPPS number (check on annuaire.sante.fr), official specialties, official extra competences and university diplomas (DU/DIU), practice modes; every practice from the RPPS register and the Ameli directory with address, phone, setting, role, fee category (Secteur 1/2, OPTAM) and hospital FINESS number; from Maiia or hospital pages when the doctor has one: stated expertise, procedures offered, hospital department and role, qualifications, languages, consultation fees, online booking, video consultations, whether online booking is open to new patients; source pages with read dates; and industry_links: Transparence Santé declarations by drug and device companies (agreements, benefits, payments) by year, company and purpose, shown as declared (licence CC BY-NC-SA 4.0; not evidence of expertise or wrongdoing). Profile text is not reproduced: give the person the source page link for the doctor's own words.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "doctor_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "type": "string",
+              "maxLength": 20,
+              "pattern": "^fr_[0-9a-z]{12}$"
+            },
+            "description": "Up to 10 doctor_ids from search_doctors, e.g. ['fr_4k9m2x7qph3t', 'fr_8w2c5n1kd7ra']."
+          },
+          "doctor_id": {
+            "type": "string",
+            "maxLength": 20,
+            "pattern": "^fr_[0-9a-z]{12}$",
+            "description": "One doctor_id from search_doctors, e.g. 'fr_4k9m2x7qph3t'."
+          }
+        }
+      },
+      "annotations": {
+        "title": "Open doctors in France",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "hospital_procedure_volumes",
+      "title": "Hospital procedure volumes in France",
+      "description": "Which French hospitals and private clinics perform a procedure most, from Open CCAM (ATIH): number of acts per hospital site per year, 2021-2025, public and private. Counts hospital stays and day cases only (PMSI MCO); procedures done in a doctor's office or a hospital outpatient clinic are not counted, and a site with fewer than 11 stays for an act is not listed. procedure = English or French text ('cataract', 'knee replacement', 'prothèse genou', 'coloscopie', 'ablation fibrillation auriculaire') or CCAM codes; the reply lists the CCAM acts it added up, so check they fit the need (add-on codes and pathology are left out of text matches). For 'aneurysm' or 'stent' say where (brain, aorta, heart, carotid). place = city, postcode, Paris/Lyon/Marseille arrondissement, département number or a hospital FINESS number; without place it ranks all of France. Hospital-level only: it does not say which surgeon operates. Then use search_doctors with hospital_finess (salaried hospital doctors) or with the hospital's postcode and the specialty (self-employed surgeons at private clinics). Free.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "procedure": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "Procedure in English or French, or CCAM codes (e.g. 'BFGA427'; an 8th phase digit is dropped)."
+          },
+          "codes": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 15,
+            "items": {
+              "type": "string",
+              "maxLength": 8,
+              "pattern": "^[A-Za-z]{4}[0-9]{3,4}$",
+              "description": "a CCAM code: 4 letters + 3 digits, e.g. 'BFGA427'"
+            },
+            "description": "Exact CCAM codes to add up (use instead of procedure to narrow)."
+          },
+          "place": {
+            "type": "string",
+            "maxLength": 200,
+            "description": "City, postcode, arrondissement ('Paris 15'), département number (2A, 2B, 971-976), or hospital FINESS number."
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 2021,
+            "maximum": 2025,
+            "description": "Default latest (2025)."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Default 10."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "For paging (at most 100)."
+          }
+        }
+      },
+      "annotations": {
+        "title": "Hospital procedure volumes in France",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "list_specialties",
+      "title": "List specialties",
+      "description": "Specialty names in this database (official French names from RPPS and Ameli, and English labels) with doctor counts. Free.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "annotations": {
+        "title": "List specialties",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "about_database",
+      "title": "About this database",
+      "description": "Sources, licences, read dates, coverage counts and known gaps. Free.",
+      "inputSchema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "annotations": {
+        "title": "About this database",
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ]
+}

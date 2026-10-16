@@ -1,7 +1,7 @@
 {
   "name": "findadoctor-mcp",
-  "version": "2026.10.15.1",
-  "description": "Find doctors in the United States and New Zealand for a condition, procedure or place, with sourced evidence for each doctor. One MCP server for both countries. No sign-up.",
+  "version": "2026.10.16.1",
+  "description": "Find doctors in the United States, New Zealand and France for a condition, procedure or place, with sourced evidence for each doctor. One MCP server for every country. No sign-up.",
   "mcpServers": {
     "findadoctor": {
       "httpUrl": "https://api.findadoctor.si/mcp"

@@ -3,14 +3,14 @@
 One MCP endpoint (Streamable HTTP) for every country:
 
 ```text
-https://api.findadoctor.si/mcp       United States and New Zealand
+https://api.findadoctor.si/mcp       United States, New Zealand and France
 ```
 
-The steps below connect it. Once connected, the agent decides the country first: where the person wants to see a doctor, from the place they mention or what it knows about where they live. If nothing settles it (no place given, or a place name used in more than one country, such as Hamilton, with no other clue), it asks the person before searching; it does not guess or search every country. Then it passes `country` (`US` or `NZ`) to `search_doctors`, `list_specialties` and `about_database`. Doctor ids carry their country (`dr_`, `nz_`), so `get_doctor` needs no `country`. Searches without `country` use the United States, so setups made before New Zealand was added keep working.
+The steps below connect it. Once connected, the agent decides the country first: where the person wants to see a doctor, from the place they mention or what it knows about where they live. If nothing settles it (no place given, or a place name used in more than one country, such as Hamilton, with no other clue), it asks the person before searching; it does not guess or search every country. Then it passes `country` (`US`, `NZ` or `FR`) to `search_doctors`, `list_specialties` and `about_database`. Doctor ids carry their country (`dr_`, `nz_`, `fr_`), so `get_doctor` needs no `country`. Searches without `country` use the United States, so setups made before other countries were added keep working.
 
-Each country counts its daily allowance separately. Account keys are issued for the United States; through this endpoint, New Zealand searches use the allowance without an account.
+Each country counts its daily allowance separately. Account keys are issued for the United States; through this endpoint, New Zealand and France use the allowance without an account.
 
-New Zealand also has a New Zealand-only endpoint, `https://api-nz.findadoctor.si/mcp`, which needs no `country`. To use it, repeat the steps with that URL under its own name, such as `findadoctor-nz` (for example `claude mcp add --transport http findadoctor-nz https://api-nz.findadoctor.si/mcp`). You don't need both: the one endpoint already covers New Zealand.
+New Zealand also has a New Zealand-only endpoint, `https://api-nz.findadoctor.si/mcp`, which needs no `country`. To use it, repeat the steps with that URL under its own name, such as `findadoctor-nz` (for example `claude mcp add --transport http findadoctor-nz https://api-nz.findadoctor.si/mcp`). You don't need both: the one endpoint already covers New Zealand. France has a France-only endpoint too, `https://api-fr.findadoctor.si/mcp` (for example `findadoctor-fr`), and the same applies.
 
 No sign-in is needed. If you have an account key (for a higher daily allowance), send it as the header `Authorization: Bearer <key>`.
 
@@ -165,7 +165,7 @@ Guide: [Add and manage MCP servers in VS Code](https://code.visualstudio.com/doc
 
 ## Any other MCP client
 
-Use Streamable HTTP with the URL above. The server supports MCP protocol versions `2025-11-25`, `2025-06-18` and `2025-03-26`. Its [MCP Registry entry](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api%2Fus-doctor-finder/versions/latest) describes it in machine-readable form; the New Zealand-only endpoint has its own [server card](https://api-nz.findadoctor.si/mcp/server-card) and [registry entry](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api-nz%2Fnz-doctor-finder/versions/latest). When it connects, the server sends usage instructions for every country, and the `findadoctor://guide/how-to-use` (United States) and `findadoctor-nz://guide/how-to-use` (New Zealand) resources hold the full guides.
+Use Streamable HTTP with the URL above. The server supports MCP protocol versions `2025-11-25`, `2025-06-18` and `2025-03-26`. Its [MCP Registry entry](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api%2Fus-doctor-finder/versions/latest) describes it in machine-readable form; the New Zealand-only and France-only endpoints have their own server cards ([New Zealand](https://api-nz.findadoctor.si/mcp/server-card), [France](https://api-fr.findadoctor.si/mcp/server-card)) and registry entries ([New Zealand](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api-nz%2Fnz-doctor-finder/versions/latest), [France](https://registry.modelcontextprotocol.io/v0.1/servers/si.findadoctor.api-fr%2Ffr-doctor-finder/versions/latest)). When it connects, the server sends usage instructions for every country, and the `findadoctor://guide/how-to-use` (United States), `findadoctor-nz://guide/how-to-use` (New Zealand) and `findadoctor-fr://guide/how-to-use` (France) resources hold the full guides.
 
 ## No MCP: the HTTP API
 
@@ -176,4 +176,4 @@ https://api.findadoctor.si/api/v1/search?condition=...&city=...&state=...
 https://api.findadoctor.si/api/v1/doctors?ids=dr_...,dr_...
 ```
 
-OpenAPI 3.1 description: https://api.findadoctor.si/openapi.json. New Zealand's HTTP API is at `https://api-nz.findadoctor.si/api/v1/…`, described in https://api-nz.findadoctor.si/openapi.json. An agent that can only fetch web pages can follow the [Agent Skill](../skills/findadoctor/SKILL.md) or [`/llms.txt`](https://findadoctor.si/llms.txt).
+OpenAPI 3.1 description: https://api.findadoctor.si/openapi.json. New Zealand's HTTP API is at `https://api-nz.findadoctor.si/api/v1/…`, described in https://api-nz.findadoctor.si/openapi.json, and France's at `https://api-fr.findadoctor.si/api/v1/…`, described in https://api-fr.findadoctor.si/openapi.json. An agent that can only fetch web pages can follow the [Agent Skill](../skills/findadoctor/SKILL.md) or [`/llms.txt`](https://findadoctor.si/llms.txt).
