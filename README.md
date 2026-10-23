@@ -6,7 +6,7 @@
 
 <p align="center">
   <b>Find doctors for a condition, procedure or place, with sourced evidence for each doctor.</b><br>
-  One remote MCP server for every country (the United States, New Zealand and France), plus an HTTP API per country, built for AI agents. No sign-up, no API key.
+  One remote MCP server plus an HTTP API per country, built for AI agents. Live in the US, New Zealand and France — more countries coming. No sign-up, no API key.
 </p>
 
 <p align="center">
@@ -41,7 +41,7 @@
 
 ## Quick start
 
-One address for every country:
+One address for every live country (the US, New Zealand and France):
 
 ```text
 https://api.findadoctor.si/mcp
@@ -105,7 +105,7 @@ More: "Is Dr. X really a hand surgeon, and where did they train?" · "Which knee
 
 ## Connect
 
-No sign-in, no API key. Point any MCP client that supports remote servers at the URL above; it covers every country.
+No sign-in, no API key. Point any MCP client that supports remote servers at the URL above; it covers the US, New Zealand and France.
 
 | Client | How |
 |---|---|
@@ -162,7 +162,7 @@ Two steps:
 | `list_specialties` | `GET /api/v1/specialties` | Specialty names and ids. |
 | `about_database` | `GET /api/v1/about` | Sources, build date, coverage, scoring and caveats. |
 
-Every parameter: [docs/tools.md](docs/tools.md) and [`reference/tools.json`](reference/tools.json) (all tools at the one address, every country). Every field of the US HTTP API: [`openapi.json`](https://api.findadoctor.si/openapi.json).
+Every parameter: [docs/tools.md](docs/tools.md) and [`reference/tools.json`](reference/tools.json) (all tools at the one address, US, New Zealand and France). Every field of the US HTTP API: [`openapi.json`](https://api.findadoctor.si/openapi.json).
 
 ### Example
 
@@ -350,12 +350,12 @@ Limits: 5 different doctors opened with `get_doctor` per network address per day
 
 ## What's in this repository
 
-This is the official guide for connecting to the service, for every country. The server code and the database are not open source and are not in this repository.
+This is the official guide for connecting to the service, in the US, New Zealand and France. The server code and the database are not open source and are not in this repository.
 
 | Path | What it is |
 |---|---|
 | [`docs/connect.md`](docs/connect.md) | Setup for each client |
-| [`docs/tools.md`](docs/tools.md), [`reference/tools.json`](reference/tools.json) | Tool reference for the one address (every country), generated from the live server |
+| [`docs/tools.md`](docs/tools.md), [`reference/tools.json`](reference/tools.json) | Tool reference for the one address (US, New Zealand and France), generated from the live server |
 | [`docs/tools-nz.md`](docs/tools-nz.md), [`reference/tools-nz.json`](reference/tools-nz.json) | Tool reference for the New Zealand-only address, generated from the live server |
 | [`docs/tools-fr.md`](docs/tools-fr.md), [`reference/tools-fr.json`](reference/tools-fr.json) | Tool reference for the France-only address, generated from the live server |
 | [`examples/`](examples) | Sample replies and runnable examples (curl, Python, TypeScript) |
